@@ -29,11 +29,9 @@
         {% render 'cart-note', form_id: form_id, note: current_cart.note, inside_accordion: note_inside_accordion %}
       </div>
     {%- endif -%}
-
     {%- if customer and customer.tags contains 'Wholesaler' -%}
-      <div id='ooTaxExemption'></div>
+      <div id="ooTaxExemption"></div>
     {% endif %}
-
     <div class="cart__order-details">
       <cart-discounts>
         <discount-list>

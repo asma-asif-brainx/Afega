@@ -1,3 +1,12 @@
+{% style %}
+  {% if block.settings.add-text-color %}
+    .custom-text-color-{{ block.id }} {
+      color: #BD3D44;
+    }
+
+    {% endif %}
+{% endstyle %}
+
 <div class="o-layout__item u-1/1 u-{{ block.settings.width }}@tab" {{ block.shopify_attributes }}>
   <div
     class="custom-content__item custom-content__item--text"
@@ -13,7 +22,7 @@
         </div>
       {% endunless %}
       {% unless block.settings.text == blank %}
-        <div class="custom-content__item-text rte">
+        <div class="custom-text-color-{{ block.id }} custom-content__item-text rte">
           {{ block.settings.text }}
         </div>
       {% endunless %}
@@ -26,6 +35,11 @@
   "name": "Text",
   "tag": null,
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "add-text-color",
+      "label": "Add text color"
+    },
     {
       "type": "text",
       "id": "title",

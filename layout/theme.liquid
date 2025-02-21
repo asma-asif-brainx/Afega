@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
     <meta name="theme-color" content="{{ settings.color_brand }}">
-    <meta name="google-site-verification" content="w6aX2nS6WH-JulDxbrO8uzpbQ4JHcIZCHbWs-oHpx1U" />
+    <meta name="google-site-verification" content="w6aX2nS6WH-JulDxbrO8uzpbQ4JHcIZCHbWs-oHpx1U">
     {% render 'network' %}
 
     {%- if canonical_url != blank -%}
@@ -243,13 +243,15 @@
 
     <!-- Header hook for plugins ================================================== -->
     {{ content_for_header }}
-        <!-- Google Tag Manager -->
-          <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({‘gtm.start’:
-          new Date().getTime(),event:‘gtm.js’});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!=‘dataLayer’?‘&l=‘+l:‘’;j.async=true;j.src=
-          ’https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,‘script’,‘dataLayer’,‘GTM-TTQS7FC’);</script>
-      <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({‘gtm.start’:
+      new Date().getTime(),event:‘gtm.js’});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!=‘dataLayer’?‘&l=‘+l:‘’;j.async=true;j.src=
+      ’https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,‘script’,‘dataLayer’,‘GTM-TTQS7FC’);
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
 
   <body
@@ -264,8 +266,14 @@
     data-heading-border="{{ settings.type_header_border }}"
   >
     <!-- Google Tag Manager (noscript) -->
-      <noscript><iframe src=“https://www.googletagmanager.com/ns.html?id=GTM-TTQS7FC”
-      height=“0" width=“0” style=“display:none;visibility:hidden”></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TTQS7FC"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
     {%- if request.design_mode -%}
       {% comment %} Check if the document is used for visual preview {% endcomment %}

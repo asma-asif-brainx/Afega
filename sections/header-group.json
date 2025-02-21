@@ -52,10 +52,12 @@
         "header_bg": "#ffffff",
         "header_text": "#131313",
         "logo": "shopify:\/\/shop_images\/AFEGA-Logo.png",
+        "logo_alternative": "shopify:\/\/shop_images\/Logo-AFEGA-klein_1.png",
         "header_transparent": false,
         "header_transparent_collection": false,
         "header_transparent_divider": true,
         "header_transparent_text": "#ffffff",
+        "logo_transparent": "shopify:\/\/shop_images\/Logo-AFEGA-klein_1.png",
         "special_link_triggers": "",
         "special_link_color": "#c00000",
         "special_link_disable_on_transparent_header": false,
@@ -79,30 +81,6 @@
     },
     "1736935437432e2495": {
       "type": "apps",
-      "blocks": {
-        "geolocation_orbe_app_block_custom_button_UqY8ey": {
-          "type": "shopify:\/\/apps\/geolocation-orbe\/blocks\/app-block-custom-button\/7cb09287-cd2b-4646-837c-f1f9b6ea703e",
-          "disabled": true,
-          "settings": {
-            "title": "Geolocation Button",
-            "selector_type": "geolocation",
-            "block_position": "#app-localization",
-            "button_content": "{square_flag} {country} | {currency_code}",
-            "custom_icon_svg": "",
-            "style_colors_text": "#000000",
-            "flag_size": 1,
-            "margin_left": 0,
-            "margin_right": 0,
-            "hide_desktop": false,
-            "hide_mobile": false,
-            "custom_css": "",
-            "custom_js": ""
-          }
-        }
-      },
-      "block_order": [
-        "geolocation_orbe_app_block_custom_button_UqY8ey"
-      ],
       "settings": {
         "include_margins": true
       }

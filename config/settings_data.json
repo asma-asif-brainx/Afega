@@ -105,7 +105,7 @@
       },
       "3243910605452009494": {
         "type": "shopify:\/\/apps\/oo-eu-tax-exemption\/blocks\/tax-exemption\/bc577450-6605-4fce-887f-6c25c2bccc22",
-        "disabled": true,
+       "disabled": true,
         "settings": {}
       }
     }

@@ -1,3 +1,13 @@
+{% style %}
+  {% if block.settings.add-custom-blue-color-button %}
+    .custom-content__btn{
+      background: #1C85E8;
+    }
+    .button-o-layout__item{
+      display: block;
+    }
+    {% endif %}
+{% endstyle %}
 {% if block.settings.title != blank %}
   {% liquid
     assign text_color = settings.color_text
@@ -8,7 +18,10 @@
       assign text_contrast_color = '#fff'
     endif
   %}
-  <div class="o-layout__item u-1/1 u-{{ block.settings.width }}@tab" {{ block.shopify_attributes }}>
+  <div
+    class="button-o-layout__item o-layout__item u-1/1 u-{{ block.settings.width }}@tab"
+    {{ block.shopify_attributes }}
+  >
     <div
       class="custom-content__item custom-content__item--button u-text-center"
       style="
@@ -56,6 +69,11 @@
   "name": "Button",
   "tag": null,
   "settings": [
+    {
+      "id": "add-custom-blue-color-button",
+      "label": "Add custom blue color button",
+      "type": "checkbox"
+    },
     {
       "type": "text",
       "id": "title",

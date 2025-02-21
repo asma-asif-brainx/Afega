@@ -76,17 +76,17 @@
   {{ content }}
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', () => {
       // Assuming 'content' is your finished CSV string
       const content = `{{ content | strip | replace: "'", "" }}`;
 
       // Create a Blob from the CSV content
-      const blob = new Blob([content], { type: "text/csv" });
+      const blob = new Blob([content], { type: 'text/csv' });
 
       // Create a temporary link element
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = "{{ page.handle }}.csv"; // Set the file name
+      link.download = '{{ page.handle }}.csv'; // Set the file name
 
       // Programmatically trigger the download
       link.click();
@@ -94,7 +94,6 @@
       // Revoke the object URL to free up memory
       URL.revokeObjectURL(link.href);
     });
-
   </script>
 {% endif %}
 

@@ -203,182 +203,428 @@
       @media screen and (max-width: 768px) {.main .shopify-section:first-child .section--full-mobile { margin-top: -30px }}
     {%- endunless -%}
   </style>
-    <div class="header-outer" style="background:white" ; width:100%>
-  <header
-    role="banner"
-    id="top"
-    class="container {{ header_classes }}"
-    data-section-id="{{ section.id }}"
-    data-section-type="header-section"
-    data-transparent-header="{{ transparent_header }}"
-    data-sticky-header="{% if section.settings.style == 'sticky' or section.settings.style == 'scroll' %}true{% else %}false{% endif %}"
-    data-header-style="{{ section.settings.layout }}"
-  >
-     <div class="app-locale-main">
+  <div class="header-outer" style="background:white" ; width:100%>
+    <header
+      role="banner"
+      id="top"
+      class="container {{ header_classes }}"
+      data-section-id="{{ section.id }}"
+      data-section-type="header-section"
+      data-transparent-header="{{ transparent_header }}"
+      data-sticky-header="{% if section.settings.style == 'sticky' or section.settings.style == 'scroll' %}true{% else %}false{% endif %}"
+      data-header-style="{{ section.settings.layout }}"
+    >
+      <div class="app-locale-main">
         <li class="secondary-nav__item" id="app-localization" style="vertical-align: super;"></li>
       </div>
-    <div class="header__logo u-flex u-flex--middle u-flex--center{% unless section.settings.logo %} header__logo--text{% endunless %}{% if transparent_header and section.settings.logo_transparent %} header__logo--has-transparent{% endif %}">
-      {% if template == 'index' %}
-        <h1 class="header__logo-wrapper js-main-logo" itemscope itemtype="http://schema.org/Organization">
-      {% else %}
-        <div class="header__logo-wrapper js-main-logo" itemscope itemtype="http://schema.org/Organization">
-      {% endif %}
-      {% if section.settings.logo %}
-        <a href="{{ routes.root_url }}" itemprop="url" class="header__logo-link">
-          <div
-            class="header__logo-ratio-box"
-            style="aspect-ratio: {{ section.settings.logo.aspect_ratio | round: 1 }}/1"
-          >
-            <img
-              src="{{ section.settings.logo | image_url: height: logo_img_size }}"
-              class="header__logo-img{% if section.settings.logo contains '.svg' %} header__logo-img--svg{% endif %}"
-              alt="{{ section.settings.logo.alt | default: shop.name }}"
-              itemprop="logo"
-              width="{{ section.settings.logo.width }}"
-              height="{{ section.settings.logo.height }}"
-              loading="eager"
+      <div class="header__logo u-flex u-flex--middle u-flex--center{% unless section.settings.logo %} header__logo--text{% endunless %}{% if transparent_header and section.settings.logo_transparent %} header__logo--has-transparent{% endif %}">
+        {% if template == 'index' %}
+          <h1 class="header__logo-wrapper js-main-logo" itemscope itemtype="http://schema.org/Organization">
+        {% else %}
+          <div class="header__logo-wrapper js-main-logo" itemscope itemtype="http://schema.org/Organization">
+        {% endif %}
+        {% if section.settings.logo %}
+          <a href="{{ routes.root_url }}" itemprop="url" class="header__logo-link">
+            <div
+              class="header__logo-ratio-box"
+              style="aspect-ratio: {{ section.settings.logo.aspect_ratio | round: 1 }}/1"
             >
+              {% if page.handle == 'quiz-questions' or page.handle == 'quiz-recommendation' %}
+                <!-- Show alternative logo on specific pages -->
+                {% if section.settings.logo_alternative %}
+                  <img
+                    src="{{ section.settings.logo_alternative | image_url: height: logo_img_size  }}"
+                    class="header__logo-img{% if section.settings.logo contains '.svg' %} header__logo-img--svg{% endif %}"
+                    alt="{{ shop.name }} - Alternative Logo"
+                    itemprop="logo"
+                    width="{{ section.settings.logo.width }}"
+                    height="{{ section.settings.logo.height }}"
+                    loading="eager"
+                  >
+                {% endif %}
+              {% else %}
+                <img
+                  src="{{ section.settings.logo | image_url: height: logo_img_size }}"
+                  class="header__logo-img{% if section.settings.logo contains '.svg' %} header__logo-img--svg{% endif %}"
+                  alt="{{ section.settings.logo.alt | default: shop.name }}"
+                  itemprop="logo"
+                  width="{{ section.settings.logo.width }}"
+                  height="{{ section.settings.logo.height }}"
+                  loading="eager"
+                >
+              {% endif %}
 
-            {% if transparent_header and section.settings.logo_transparent %}
-              <img
-                src="{{ section.settings.logo_transparent | image_url: height: logo_img_size }}"
-                class="header__logo-img header__logo-img--transparent{% if section.settings.logo contains '.svg' %} header__logo-img--svg{% endif %}"
-                alt="{{ section.settings.logo_transparent.alt | default: shop.name }}"
-                itemprop="logo-transparent"
-                width="{{ section.settings.logo_transparent.width }}"
-                height="{{ section.settings.logo_transparent.height }}"
-                loading="eager"
-              >
-            {% endif %}
-          </div>
-        </a>
-      {% else %}
-        <a href="{{ routes.root_url }}" class="header__logo-link header__logo-link--text" itemprop="url">
-          {{- shop.name -}}
-        </a>
-      {% endif %}
-      {% if template == 'index' %}
-        </h1>
-      {% else %}
-        </div>
-      {% endif %}
-    </div>
-
-    <div
-      class="header-trigger header-trigger--left mobile-draw-trigger-icon u-flex u-flex--middle js-mobile-draw-icon"
-      style="display: none"
-    >
-      <button
-        class="header-trigger__link header-trigger__link--mobile"
-        aria-haspopup="dialog"
-        aria-label="{{ 'layout.navigation.menu' | t }}"
-        data-a11y-dialog-show="modal-main-menu"
-      >
-        {% render 'icons-theme', icon: 'menu' %}
-      </button>
-    </div>
-    {% if settings.search_enable %}
-      <div
-        class="header-trigger header-trigger--far-right search-draw-trigger-icon u-flex u-flex--middle js-search-draw-icon"
-        style="display: none"
-      >
-        <a
-          href="{{ routes.search_url }}"
-          class="header-trigger__link header-trigger__link--search"
-          aria-haspopup="dialog"
-          aria-label="{{ 'layout.navigation.search' | t }}"
-          data-a11y-dialog-show="modal-search"
-        >
-          {% render 'icons-theme', icon: 'search' %}
-        </a>
-      </div>
-    {% endif %}
-    <div
-      class="header-trigger header-trigger--right cart-draw-trigger-icon u-flex u-flex--middle js-cart-draw-icon"
-      style="display: none"
-    >
-      <cart-link>
-        {%- unless request.page_type == 'cart' -%}
-          <a
-            href="{{ routes.cart_url }}"
-            class="
-              header-trigger__link
-              header-trigger__link--cart
-              js-cart-icon
-              {% if cart.item_count > 0 %}js-cart-full{% endif %}
-            "
-            aria-haspopup="dialog"
-            aria-label="{{ 'layout.cart.title' | t }}"
-            {% if settings.cart_type == 'modal' %}
-              data-a11y-dialog-show="modal-cart"
-            {% endif %}
-          >
-            {% render 'icons-theme', icon: 'cart' %}
-            <div class="cart-count-bubble">
-              <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
+              {% if transparent_header and section.settings.logo_transparent %}
+                <img
+                  src="{{ section.settings.logo_transparent | image_url: height: logo_img_size }}"
+                  class="header__logo-img header__logo-img--transparent{% if section.settings.logo contains '.svg' %} header__logo-img--svg{% endif %}"
+                  alt="{{ section.settings.logo_transparent.alt | default: shop.name }}"
+                  itemprop="logo-transparent"
+                  width="{{ section.settings.logo_transparent.width }}"
+                  height="{{ section.settings.logo_transparent.height }}"
+                  loading="eager"
+                >
+              {% endif %}
             </div>
           </a>
-        {%- else -%}
-          <span class="header-trigger__link header-trigger__link--cart js-cart-icon{% if cart.item_count > 0 %} js-cart-full{% endif %}">
-            {% render 'icons-theme', icon: 'cart' %}
-            <div class="cart-count-bubble">
-              <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
-            </div>
-          </span>
-        {%- endunless -%}
-      </cart-link>
-    </div>
+        {% else %}
+          <a href="{{ routes.root_url }}" class="header__logo-link header__logo-link--text" itemprop="url">
+            {{- shop.name -}}
+          </a>
+        {% endif %}
+        {% if template == 'index' %}
+          </h1>
+        {% else %}
+          </div>
+        {% endif %}
+      </div>
 
-    <div class="custom-header-navs header-navs js-heaver-navs u-clearfix u-hidden@tab-down">
-      {%- if section.settings.menu != blank -%}
-        <nav class="primary-nav header-navs__items js-primary-nav" role="navigation">
-          <nested-menu submenu-direction="below">
-            <ul class="custom-submenu-direction primary-nav__items js-primary-nav-items">
-              {%- for link in section.settings.menu.links -%}
-                {%- liquid
-                  assign mega = false
-                  assign triggers = ''
-                -%}
-                {%- for block in section.blocks -%}
+      <div
+        class="header-trigger header-trigger--left mobile-draw-trigger-icon u-flex u-flex--middle js-mobile-draw-icon"
+        style="display: none"
+      >
+        <button
+          class="header-trigger__link header-trigger__link--mobile"
+          aria-haspopup="dialog"
+          aria-label="{{ 'layout.navigation.menu' | t }}"
+          data-a11y-dialog-show="modal-main-menu"
+        >
+          {% render 'icons-theme', icon: 'menu' %}
+        </button>
+      </div>
+      {% if settings.search_enable %}
+        <div
+          class="header-trigger header-trigger--far-right search-draw-trigger-icon u-flex u-flex--middle js-search-draw-icon"
+          style="display: none"
+        >
+          <a
+            href="{{ routes.search_url }}"
+            class="header-trigger__link header-trigger__link--search"
+            aria-haspopup="dialog"
+            aria-label="{{ 'layout.navigation.search' | t }}"
+            data-a11y-dialog-show="modal-search"
+          >
+            {% render 'icons-theme', icon: 'search' %}
+          </a>
+        </div>
+      {% endif %}
+      <div
+        class="header-trigger header-trigger--right cart-draw-trigger-icon u-flex u-flex--middle js-cart-draw-icon"
+        style="display: none"
+      >
+        <cart-link>
+          {%- unless request.page_type == 'cart' -%}
+            <a
+              href="{{ routes.cart_url }}"
+              class="
+                header-trigger__link
+                header-trigger__link--cart
+                js-cart-icon
+                {% if cart.item_count > 0 %}js-cart-full{% endif %}
+              "
+              aria-haspopup="dialog"
+              aria-label="{{ 'layout.cart.title' | t }}"
+              {% if settings.cart_type == 'modal' %}
+                data-a11y-dialog-show="modal-cart"
+              {% endif %}
+            >
+              {% render 'icons-theme', icon: 'cart' %}
+              <div class="cart-count-bubble">
+                <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
+              </div>
+            </a>
+          {%- else -%}
+            <span class="header-trigger__link header-trigger__link--cart js-cart-icon{% if cart.item_count > 0 %} js-cart-full{% endif %}">
+              {% render 'icons-theme', icon: 'cart' %}
+              <div class="cart-count-bubble">
+                <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
+              </div>
+            </span>
+          {%- endunless -%}
+        </cart-link>
+      </div>
+
+      <div class="custom-header-navs header-navs js-heaver-navs u-clearfix u-hidden@tab-down">
+        {%- if section.settings.menu != blank -%}
+          <nav class="primary-nav header-navs__items js-primary-nav" role="navigation">
+            <nested-menu submenu-direction="below">
+              <ul class="custom-submenu-direction primary-nav__items js-primary-nav-items">
+                {%- for link in section.settings.menu.links -%}
                   {%- liquid
-                    assign link_title = link.title | downcase
-
-                    if block.settings.triggers != blank
-                      assign mega_menu_triggers_raw = block.settings.triggers | newline_to_br | strip_newlines | split: '<br />'
-                      assign mega_menu_triggers = '' | split: ','
-                      for mega_menu_trigger in mega_menu_triggers_raw
-                        assign t = mega_menu_trigger | strip | downcase | split: ';'
-                        assign mega_menu_triggers = mega_menu_triggers | concat: t
-                      endfor
-                    endif
+                    assign mega = false
+                    assign triggers = ''
                   -%}
-                  {%- if mega_menu_triggers contains link_title -%}
+                  {%- for block in section.blocks -%}
                     {%- liquid
-                      assign test_trigger = link_title | append: ','
-                      if triggers contains test_trigger
-                        break
+                      assign link_title = link.title | downcase
+
+                      if block.settings.triggers != blank
+                        assign mega_menu_triggers_raw = block.settings.triggers | newline_to_br | strip_newlines | split: '<br />'
+                        assign mega_menu_triggers = '' | split: ','
+                        for mega_menu_trigger in mega_menu_triggers_raw
+                          assign t = mega_menu_trigger | strip | downcase | split: ';'
+                          assign mega_menu_triggers = mega_menu_triggers | concat: t
+                        endfor
                       endif
-                      assign triggers = triggers | append: test_trigger
-
-                      assign mega = true
                     -%}
+                    {%- if mega_menu_triggers contains link_title -%}
+                      {%- liquid
+                        assign test_trigger = link_title | append: ','
+                        if triggers contains test_trigger
+                          break
+                        endif
+                        assign triggers = triggers | append: test_trigger
 
-                    <li class="primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                      <header-details-disclosure
-                        class="mega"
-                        {% if header_is_sticky %}
-                          adjust-mega-menu-height
-                        {% endif %}
-                        {{ block.shopify_attributes }}
-                      >
-                        <details
-                          id="Details-HeaderMenu-{{ forloop.index }}"
-                          data-link-title="{{ link.title | escape }}"
+                        assign mega = true
+                      -%}
+
+                      <li class="primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                        <header-details-disclosure
+                          class="mega"
+                          {% if header_is_sticky %}
+                            adjust-mega-menu-height
+                          {% endif %}
+                          {{ block.shopify_attributes }}
                         >
-                          <summary class="primary-nav__summary">
+                          <details
+                            id="Details-HeaderMenu-{{ forloop.index }}"
+                            data-link-title="{{ link.title | escape }}"
+                          >
+                            <summary class="primary-nav__summary">
+                              <a
+                                href="{{ link.url }}"
+                                class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                                {% if link.current %}
+                                  aria-current="page"
+                                {% endif -%}
+                                {% if special_links_triggers contains link_title %}
+                                  style="--special-link-color: {{ section.settings.special_link_color }}"
+                                {% endif %}
+                              >
+                                {{- link.title | escape -}}
+                                {%- if section.settings.enable_chevrons -%}
+                                  {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                                {%- endif -%}
+                              </a>
+                            </summary>
+
+                            <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
+                              <div class="nav__sub-wrap">
+                                {%- if block.type == 'image-menu' -%}
+                                  {%- liquid
+                                    assign single_row = true
+                                    assign linklist_width = 0
+                                    if block.settings.enable_navigations
+                                      assign linklist_width = block.settings.linklist_width
+                                    endif
+                                    assign additional_content_width = 0
+                                    if block.settings.enable_additional_content
+                                      assign additional_content_width = block.settings.additional_content_width
+                                    endif
+                                    assign total_blocks_width = linklist_width | plus: additional_content_width
+                                    if total_blocks_width > 100
+                                      assign single_row = false
+                                    endif
+
+                                    assign animation_delay = 50
+                                    assign item_position = 0
+                                    assign dummy_cta_amount = 2
+                                  -%}
+                                  <div
+                                    class="mega-panel mega-panel--alignment-{{ block.settings.layout_alignment }}{% if single_row %} mega-panel--single-row{% endif %}"
+                                    style="--panel-max-width: {{ block.settings.content_width }}px;"
+                                  >
+                                    {%- liquid
+                                      if block.settings.layout_content_priority == 'additional_content' and block.settings.enable_additional_content
+                                        render 'mega-menu-cta', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_cta_amount
+
+                                        for i in (1..6)
+                                          assign settings_image_id = 'image_' | append: i
+                                          assign settings_image_title = settings_image_id | append: '_title'
+                                          assign settings_image_text = settings_image_id | append: '_text'
+
+                                          if block.settings[settings_image_id] != blank or block.settings[settings_image_title] != blank or block.settings[settings_image_text] != blank
+                                            assign item_position = item_position | plus: 1
+                                          endif
+                                        endfor
+
+                                        if item_position == 0
+                                          assign item_position = dummy_cta_amount
+                                        endif
+                                      endif
+
+                                      if block.settings.enable_navigations
+                                        render 'mega-menu-links', block: block, link: link, animation_delay: animation_delay, item_start_position: item_position
+                                      endif
+
+                                      if block.settings.layout_content_priority == 'navigation' and block.settings.enable_additional_content
+                                        assign item_position = 0
+                                        if block.settings.enable_navigations
+                                          assign item_position = link.links.size
+                                        endif
+                                        render 'mega-menu-cta', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_cta_amount
+                                      endif
+                                    -%}
+                                  </div>
+                                {%- elsif block.type == 'collection-menu' -%}
+                                  {%- liquid
+                                    assign single_row = true
+                                    assign linklist_width = 0
+                                    if block.settings.enable_navigations
+                                      assign linklist_width = block.settings.linklist_width
+                                    endif
+                                    assign additional_content_width = 0
+                                    if block.settings.enable_additional_content
+                                      assign additional_content_width = block.settings.additional_content_width
+                                    endif
+                                    assign total_blocks_width = linklist_width | plus: additional_content_width
+                                    if total_blocks_width > 100
+                                      assign single_row = false
+                                    endif
+
+                                    assign animation_delay = 50
+                                    assign item_position = 0
+
+                                    assign dummy_collection_amount = 5
+                                  -%}
+                                  <div
+                                    class="mega-panel mega-panel--alignment-{{ block.settings.layout_alignment }}{% if single_row %} mega-panel--single-row{% endif %}"
+                                    style="--panel-max-width: {{ block.settings.content_width }}px;"
+                                  >
+                                    {%- liquid
+                                      if block.settings.layout_content_priority == 'additional_content' and block.settings.enable_additional_content
+                                        render 'mega-menu-collections', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_collection_amount
+
+                                        if block.settings.collection_list.count > 0
+                                          assign item_position = block.settings.collection_list.count
+                                        else
+                                          assign item_position = dummy_collection_amount
+                                        endif
+                                      endif
+
+                                      if block.settings.enable_navigations
+                                        render 'mega-menu-links', block: block, link: link, animation_delay: animation_delay, item_start_position: item_position
+                                      endif
+
+                                      if block.settings.layout_content_priority == 'navigation' and block.settings.enable_additional_content
+                                        assign item_position = 0
+                                        if block.settings.enable_navigations
+                                          assign item_position = link.links.size
+                                        endif
+                                        render 'mega-menu-collections', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_collection_amount
+                                      endif
+                                    -%}
+                                  </div>
+                                {%- endif -%}
+                              </div>
+                            </div>
+                          </details>
+                        </header-details-disclosure>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- assign selected_language = localization.language.iso_code -%}
+
+                  {%- if mega == false -%}
+                    {%- liquid
+                      assign link_title = link.title | downcase
+                    -%}
+                    {%- if link_title == 'wholesaler' -%}
+                      {%- if customer and customer.tags contains 'Wholesaler' -%}
+                        <li class="custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                          {%- if link.links != blank -%}
+                            <header-details-disclosure>
+                              <details
+                                id="Details-HeaderMenu-{{ forloop.index }}"
+                                data-link-title="{{ link.title | escape }}"
+                              >
+                                <summary class="header__menu-item">
+                                  <a
+                                    href="{{ link.url }}"
+                                    class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                                    {% if link.current %}
+                                      aria-current="page"
+                                    {% endif -%}
+                                    {% if special_links_triggers contains link_title %}
+                                      style="--special-link-color: {{ section.settings.special_link_color }}"
+                                    {% endif %}
+                                  >
+                                    {{- link.title | escape -}}
+                                    {%- if section.settings.enable_chevrons -%}
+                                      {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                                    {%- endif -%}
+                                  </a>
+                                </summary>
+                                <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
+                                  <nested-menu class="nav__sub-wrap">
+                                    <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
+                                      {%- for childlink in link.links -%}
+                                        <li class="list-menu__item">
+                                          {%- if childlink.links == blank -%}
+                                            <a
+                                              href="{{ childlink.url }}"
+                                              class="list-menu__link"
+                                              {% if childlink.current %}
+                                                aria-current="page"
+                                              {% endif %}
+                                            >
+                                              <span class="list-menu__text">{{ childlink.title | escape }}</span>
+                                            </a>
+                                          {%- else -%}
+                                            <header-details-disclosure>
+                                              <details id="Details-HeaderSubMenu-{{ forloop.index }}">
+                                                <summary class="header__menu-item list-menu__link">
+                                                  <a
+                                                    href="{{ childlink.url }}"
+                                                    class="list-menu__text"
+                                                    {% if link.current %}
+                                                      aria-current="page"
+                                                    {% endif %}
+                                                  >
+                                                    {{ childlink.title | escape }}
+                                                  </a>
+                                                  {%- render 'icons-theme', icon: 'chevron' -%}
+                                                </summary>
+                                                <div
+                                                  id="HeaderSubMenu-MenuList-{{ forloop.index }}"
+                                                  class="nav__sub-t"
+                                                  tabindex="-1"
+                                                >
+                                                  <div class="nav__sub-t-wrap">
+                                                    <ul class="list-menu has-animation" style="animation-delay: 100ms">
+                                                      {%- for grandchildlink in childlink.links -%}
+                                                        <li class="list-menu__item">
+                                                          <a
+                                                            href="{{ grandchildlink.url }}"
+                                                            class="list-menu__link"
+                                                            {% if grandchildlink.current %}
+                                                              aria-current="page"
+                                                            {% endif %}
+                                                          >
+                                                            <span class="list-menu__text">
+                                                              {{- grandchildlink.title | escape -}}
+                                                            </span>
+                                                          </a>
+                                                        </li>
+                                                      {%- endfor -%}
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                              </details>
+                                            </header-details-disclosure>
+                                          {%- endif -%}
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  </nested-menu>
+                                </div>
+                              </details>
+                            </header-details-disclosure>
+                          {%- else -%}
                             <a
                               href="{{ link.url }}"
-                              class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                              class="custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
                               {% if link.current %}
                                 aria-current="page"
                               {% endif -%}
@@ -387,136 +633,11 @@
                               {% endif %}
                             >
                               {{- link.title | escape -}}
-                              {%- if section.settings.enable_chevrons -%}
-                                {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                              {%- endif -%}
                             </a>
-                          </summary>
-
-                          <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
-                            <div class="nav__sub-wrap">
-                              {%- if block.type == 'image-menu' -%}
-                                {%- liquid
-                                  assign single_row = true
-                                  assign linklist_width = 0
-                                  if block.settings.enable_navigations
-                                    assign linklist_width = block.settings.linklist_width
-                                  endif
-                                  assign additional_content_width = 0
-                                  if block.settings.enable_additional_content
-                                    assign additional_content_width = block.settings.additional_content_width
-                                  endif
-                                  assign total_blocks_width = linklist_width | plus: additional_content_width
-                                  if total_blocks_width > 100
-                                    assign single_row = false
-                                  endif
-
-                                  assign animation_delay = 50
-                                  assign item_position = 0
-                                  assign dummy_cta_amount = 2
-                                -%}
-                                <div
-                                  class="mega-panel mega-panel--alignment-{{ block.settings.layout_alignment }}{% if single_row %} mega-panel--single-row{% endif %}"
-                                  style="--panel-max-width: {{ block.settings.content_width }}px;"
-                                >
-                                  {%- liquid
-                                    if block.settings.layout_content_priority == 'additional_content' and block.settings.enable_additional_content
-                                      render 'mega-menu-cta', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_cta_amount
-
-                                      for i in (1..6)
-                                        assign settings_image_id = 'image_' | append: i
-                                        assign settings_image_title = settings_image_id | append: '_title'
-                                        assign settings_image_text = settings_image_id | append: '_text'
-
-                                        if block.settings[settings_image_id] != blank or block.settings[settings_image_title] != blank or block.settings[settings_image_text] != blank
-                                          assign item_position = item_position | plus: 1
-                                        endif
-                                      endfor
-
-                                      if item_position == 0
-                                        assign item_position = dummy_cta_amount
-                                      endif
-                                    endif
-
-                                    if block.settings.enable_navigations
-                                      render 'mega-menu-links', block: block, link: link, animation_delay: animation_delay, item_start_position: item_position
-                                    endif
-
-                                    if block.settings.layout_content_priority == 'navigation' and block.settings.enable_additional_content
-                                      assign item_position = 0
-                                      if block.settings.enable_navigations
-                                        assign item_position = link.links.size
-                                      endif
-                                      render 'mega-menu-cta', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_cta_amount
-                                    endif
-                                  -%}
-                                </div>
-                              {%- elsif block.type == 'collection-menu' -%}
-                                {%- liquid
-                                  assign single_row = true
-                                  assign linklist_width = 0
-                                  if block.settings.enable_navigations
-                                    assign linklist_width = block.settings.linklist_width
-                                  endif
-                                  assign additional_content_width = 0
-                                  if block.settings.enable_additional_content
-                                    assign additional_content_width = block.settings.additional_content_width
-                                  endif
-                                  assign total_blocks_width = linklist_width | plus: additional_content_width
-                                  if total_blocks_width > 100
-                                    assign single_row = false
-                                  endif
-
-                                  assign animation_delay = 50
-                                  assign item_position = 0
-
-                                  assign dummy_collection_amount = 5
-                                -%}
-                                <div
-                                  class="mega-panel mega-panel--alignment-{{ block.settings.layout_alignment }}{% if single_row %} mega-panel--single-row{% endif %}"
-                                  style="--panel-max-width: {{ block.settings.content_width }}px;"
-                                >
-                                  {%- liquid
-                                    if block.settings.layout_content_priority == 'additional_content' and block.settings.enable_additional_content
-                                      render 'mega-menu-collections', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_collection_amount
-
-                                      if block.settings.collection_list.count > 0
-                                        assign item_position = block.settings.collection_list.count
-                                      else
-                                        assign item_position = dummy_collection_amount
-                                      endif
-                                    endif
-
-                                    if block.settings.enable_navigations
-                                      render 'mega-menu-links', block: block, link: link, animation_delay: animation_delay, item_start_position: item_position
-                                    endif
-
-                                    if block.settings.layout_content_priority == 'navigation' and block.settings.enable_additional_content
-                                      assign item_position = 0
-                                      if block.settings.enable_navigations
-                                        assign item_position = link.links.size
-                                      endif
-                                      render 'mega-menu-collections', block: block, animation_delay: animation_delay, item_start_position: item_position, dummy_amount: dummy_collection_amount
-                                    endif
-                                  -%}
-                                </div>
-                              {%- endif -%}
-                            </div>
-                          </div>
-                        </details>
-                      </header-details-disclosure>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-
-                {%- assign selected_language = localization.language.iso_code -%}
-
-                {%- if mega == false -%}
-                  {%- liquid
-                    assign link_title = link.title | downcase
-                  -%}
-                  {%- if link_title == 'wholesaler' -%}
-                    {%- if customer and customer.tags contains 'Wholesaler' -%}
+                          {%- endif -%}
+                        </li>
+                      {%- endif -%}
+                    {%- elsif selected_language == 'de' and link_title == 'beratung' -%}
                       <li class="custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
                         {%- if link.links != blank -%}
                           <header-details-disclosure>
@@ -621,554 +742,448 @@
                           </a>
                         {%- endif -%}
                       </li>
+                    {%- elsif link_title == 'blog afega research group' -%}
+                      <li class="notranslate custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                        {%- if link.links != blank -%}
+                          <header-details-disclosure>
+                            <details
+                              id="Details-HeaderMenu-{{ forloop.index }}"
+                              data-link-title="{{ link.title | escape }}"
+                            >
+                              <summary class="header__menu-item">
+                                <a
+                                  href="{{ link.url }}"
+                                  class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                                  {% if link.current %}
+                                    aria-current="page"
+                                  {% endif -%}
+                                  {% if special_links_triggers contains link_title %}
+                                    style="--special-link-color: {{ section.settings.special_link_color }}"
+                                  {% endif %}
+                                >
+                                  {{- link.title | escape -}}
+                                  {%- if section.settings.enable_chevrons -%}
+                                    {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                                  {%- endif -%}
+                                </a>
+                              </summary>
+                              <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
+                                <nested-menu class="nav__sub-wrap">
+                                  <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
+                                    {%- for childlink in link.links -%}
+                                      <li class="list-menu__item">
+                                        {%- if childlink.links == blank -%}
+                                          <a
+                                            href="{{ childlink.url }}"
+                                            class="list-menu__link"
+                                            {% if childlink.current %}
+                                              aria-current="page"
+                                            {% endif %}
+                                          >
+                                            <span class="list-menu__text">{{ childlink.title | escape }}</span>
+                                          </a>
+                                        {%- else -%}
+                                          <header-details-disclosure>
+                                            <details id="Details-HeaderSubMenu-{{ forloop.index }}">
+                                              <summary class="header__menu-item list-menu__link">
+                                                <a
+                                                  href="{{ childlink.url }}"
+                                                  class="list-menu__text"
+                                                  {% if link.current %}
+                                                    aria-current="page"
+                                                  {% endif %}
+                                                >
+                                                  {{ childlink.title | escape }}
+                                                </a>
+                                                {%- render 'icons-theme', icon: 'chevron' -%}
+                                              </summary>
+                                              <div
+                                                id="HeaderSubMenu-MenuList-{{ forloop.index }}"
+                                                class="nav__sub-t"
+                                                tabindex="-1"
+                                              >
+                                                <div class="nav__sub-t-wrap">
+                                                  <ul class="list-menu has-animation" style="animation-delay: 100ms">
+                                                    {%- for grandchildlink in childlink.links -%}
+                                                      <li class="list-menu__item">
+                                                        <a
+                                                          href="{{ grandchildlink.url }}"
+                                                          class="list-menu__link"
+                                                          {% if grandchildlink.current %}
+                                                            aria-current="page"
+                                                          {% endif %}
+                                                        >
+                                                          <span class="list-menu__text">
+                                                            {{- grandchildlink.title | escape -}}
+                                                          </span>
+                                                        </a>
+                                                      </li>
+                                                    {%- endfor -%}
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </details>
+                                          </header-details-disclosure>
+                                        {%- endif -%}
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                </nested-menu>
+                              </div>
+                            </details>
+                          </header-details-disclosure>
+                        {%- else -%}
+                          <a
+                            href="{{ link.url }}"
+                            class="notranslate custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                            {% if link.current %}
+                              aria-current="page"
+                            {% endif -%}
+                            {% if special_links_triggers contains link_title %}
+                              style="--special-link-color: {{ section.settings.special_link_color }}"
+                            {% endif %}
+                          >
+                            {{- link.title | escape -}}
+                          </a>
+                        {%- endif -%}
+                      </li>
+                    {%- elsif link_title != 'beratung' -%}
+                      <li class="custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                        {%- if link.links != blank -%}
+                          <header-details-disclosure>
+                            <details
+                              id="Details-HeaderMenu-{{ forloop.index }}"
+                              data-link-title="{{ link.title | escape }}"
+                            >
+                              <summary class="header__menu-item">
+                                <a
+                                  href="{{ link.url }}"
+                                  class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                                  {% if link.current %}
+                                    aria-current="page"
+                                  {% endif -%}
+                                  {% if special_links_triggers contains link_title %}
+                                    style="--special-link-color: {{ section.settings.special_link_color }}"
+                                  {% endif %}
+                                >
+                                  {{- link.title | escape -}}
+                                  {%- if section.settings.enable_chevrons -%}
+                                    {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                                  {%- endif -%}
+                                </a>
+                              </summary>
+                              <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
+                                <nested-menu class="nav__sub-wrap">
+                                  <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
+                                    {%- for childlink in link.links -%}
+                                      <li class="list-menu__item">
+                                        {%- if childlink.links == blank -%}
+                                          <a
+                                            href="{{ childlink.url }}"
+                                            class="list-menu__link"
+                                            {% if childlink.current %}
+                                              aria-current="page"
+                                            {% endif %}
+                                          >
+                                            <span class="list-menu__text {% if childlink.title == 'UTHEVER®' %}notranslate{% endif %}">
+                                              {{- childlink.title | escape -}}
+                                            </span>
+                                          </a>
+                                        {%- else -%}
+                                          <header-details-disclosure>
+                                            <details id="Details-HeaderSubMenu-{{ forloop.index }}">
+                                              <summary class="header__menu-item list-menu__link">
+                                                <a
+                                                  href="{{ childlink.url }}"
+                                                  class="list-menu__text"
+                                                  {% if link.current %}
+                                                    aria-current="page"
+                                                  {% endif %}
+                                                >
+                                                  {{ childlink.title | escape }}
+                                                </a>
+                                                {%- render 'icons-theme', icon: 'chevron' -%}
+                                              </summary>
+                                              <div
+                                                id="HeaderSubMenu-MenuList-{{ forloop.index }}"
+                                                class="nav__sub-t"
+                                                tabindex="-1"
+                                              >
+                                                <div class="nav__sub-t-wrap">
+                                                  <ul class="list-menu has-animation" style="animation-delay: 100ms">
+                                                    {%- for grandchildlink in childlink.links -%}
+                                                      <li class="list-menu__item">
+                                                        <a
+                                                          href="{{ grandchildlink.url }}"
+                                                          class="list-menu__link"
+                                                          {% if grandchildlink.current %}
+                                                            aria-current="page"
+                                                          {% endif %}
+                                                        >
+                                                          <span class="list-menu__text">
+                                                            {{- grandchildlink.title | escape -}}
+                                                          </span>
+                                                        </a>
+                                                      </li>
+                                                    {%- endfor -%}
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </details>
+                                          </header-details-disclosure>
+                                        {%- endif -%}
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                </nested-menu>
+                              </div>
+                            </details>
+                          </header-details-disclosure>
+                        {%- else -%}
+                          <a
+                            href="{{ link.url }}"
+                            class="custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
+                            {% if link.current %}
+                              aria-current="page"
+                            {% endif -%}
+                            {% if special_links_triggers contains link_title %}
+                              style="--special-link-color: {{ section.settings.special_link_color }}"
+                            {% endif %}
+                          >
+                            {{- link.title | escape -}}
+                          </a>
+                        {%- endif -%}
+                      </li>
                     {%- endif -%}
-                  {%- elsif selected_language == 'de' and link_title == 'beratung' -%}
-                    <li class="custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                      {%- if link.links != blank -%}
-                        <header-details-disclosure>
-                          <details
-                            id="Details-HeaderMenu-{{ forloop.index }}"
-                            data-link-title="{{ link.title | escape }}"
-                          >
-                            <summary class="header__menu-item">
-                              <a
-                                href="{{ link.url }}"
-                                class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                                {% if link.current %}
-                                  aria-current="page"
-                                {% endif -%}
-                                {% if special_links_triggers contains link_title %}
-                                  style="--special-link-color: {{ section.settings.special_link_color }}"
-                                {% endif %}
-                              >
-                                {{- link.title | escape -}}
-                                {%- if section.settings.enable_chevrons -%}
-                                  {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                                {%- endif -%}
-                              </a>
-                            </summary>
-                            <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
-                              <nested-menu class="nav__sub-wrap">
-                                <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
-                                  {%- for childlink in link.links -%}
-                                    <li class="list-menu__item">
-                                      {%- if childlink.links == blank -%}
-                                        <a
-                                          href="{{ childlink.url }}"
-                                          class="list-menu__link"
-                                          {% if childlink.current %}
-                                            aria-current="page"
-                                          {% endif %}
-                                        >
-                                          <span class="list-menu__text">{{ childlink.title | escape }}</span>
-                                        </a>
-                                      {%- else -%}
-                                        <header-details-disclosure>
-                                          <details id="Details-HeaderSubMenu-{{ forloop.index }}">
-                                            <summary class="header__menu-item list-menu__link">
-                                              <a
-                                                href="{{ childlink.url }}"
-                                                class="list-menu__text"
-                                                {% if link.current %}
-                                                  aria-current="page"
-                                                {% endif %}
-                                              >
-                                                {{ childlink.title | escape }}
-                                              </a>
-                                              {%- render 'icons-theme', icon: 'chevron' -%}
-                                            </summary>
-                                            <div
-                                              id="HeaderSubMenu-MenuList-{{ forloop.index }}"
-                                              class="nav__sub-t"
-                                              tabindex="-1"
-                                            >
-                                              <div class="nav__sub-t-wrap">
-                                                <ul class="list-menu has-animation" style="animation-delay: 100ms">
-                                                  {%- for grandchildlink in childlink.links -%}
-                                                    <li class="list-menu__item">
-                                                      <a
-                                                        href="{{ grandchildlink.url }}"
-                                                        class="list-menu__link"
-                                                        {% if grandchildlink.current %}
-                                                          aria-current="page"
-                                                        {% endif %}
-                                                      >
-                                                        <span class="list-menu__text">
-                                                          {{- grandchildlink.title | escape -}}
-                                                        </span>
-                                                      </a>
-                                                    </li>
-                                                  {%- endfor -%}
-                                                </ul>
-                                              </div>
-                                            </div>
-                                          </details>
-                                        </header-details-disclosure>
-                                      {%- endif -%}
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              </nested-menu>
-                            </div>
-                          </details>
-                        </header-details-disclosure>
-                      {%- else -%}
-                        <a
-                          href="{{ link.url }}"
-                          class="custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                          {% if link.current %}
-                            aria-current="page"
-                          {% endif -%}
-                          {% if special_links_triggers contains link_title %}
-                            style="--special-link-color: {{ section.settings.special_link_color }}"
-                          {% endif %}
-                        >
-                          {{- link.title | escape -}}
-                        </a>
-                      {%- endif -%}
-                    </li>
-                  {%- elsif link_title == 'blog afega research group' -%}
-                    <li class="notranslate custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                      {%- if link.links != blank -%}
-                        <header-details-disclosure>
-                          <details
-                            id="Details-HeaderMenu-{{ forloop.index }}"
-                            data-link-title="{{ link.title | escape }}"
-                          >
-                            <summary class="header__menu-item">
-                              <a
-                                href="{{ link.url }}"
-                                class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                                {% if link.current %}
-                                  aria-current="page"
-                                {% endif -%}
-                                {% if special_links_triggers contains link_title %}
-                                  style="--special-link-color: {{ section.settings.special_link_color }}"
-                                {% endif %}
-                              >
-                                {{- link.title | escape -}}
-                                {%- if section.settings.enable_chevrons -%}
-                                  {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                                {%- endif -%}
-                              </a>
-                            </summary>
-                            <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
-                              <nested-menu class="nav__sub-wrap">
-                                <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
-                                  {%- for childlink in link.links -%}
-                                    <li class="list-menu__item">
-                                      {%- if childlink.links == blank -%}
-                                        <a
-                                          href="{{ childlink.url }}"
-                                          class="list-menu__link"
-                                          {% if childlink.current %}
-                                            aria-current="page"
-                                          {% endif %}
-                                        >
-                                          <span class="list-menu__text">{{ childlink.title | escape }}</span>
-                                        </a>
-                                      {%- else -%}
-                                        <header-details-disclosure>
-                                          <details id="Details-HeaderSubMenu-{{ forloop.index }}">
-                                            <summary class="header__menu-item list-menu__link">
-                                              <a
-                                                href="{{ childlink.url }}"
-                                                class="list-menu__text"
-                                                {% if link.current %}
-                                                  aria-current="page"
-                                                {% endif %}
-                                              >
-                                                {{ childlink.title | escape }}
-                                              </a>
-                                              {%- render 'icons-theme', icon: 'chevron' -%}
-                                            </summary>
-                                            <div
-                                              id="HeaderSubMenu-MenuList-{{ forloop.index }}"
-                                              class="nav__sub-t"
-                                              tabindex="-1"
-                                            >
-                                              <div class="nav__sub-t-wrap">
-                                                <ul class="list-menu has-animation" style="animation-delay: 100ms">
-                                                  {%- for grandchildlink in childlink.links -%}
-                                                    <li class="list-menu__item">
-                                                      <a
-                                                        href="{{ grandchildlink.url }}"
-                                                        class="list-menu__link"
-                                                        {% if grandchildlink.current %}
-                                                          aria-current="page"
-                                                        {% endif %}
-                                                      >
-                                                        <span class="list-menu__text">
-                                                          {{- grandchildlink.title | escape -}}
-                                                        </span>
-                                                      </a>
-                                                    </li>
-                                                  {%- endfor -%}
-                                                </ul>
-                                              </div>
-                                            </div>
-                                          </details>
-                                        </header-details-disclosure>
-                                      {%- endif -%}
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              </nested-menu>
-                            </div>
-                          </details>
-                        </header-details-disclosure>
-                      {%- else -%}
-                        <a
-                          href="{{ link.url }}"
-                          class="notranslate custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                          {% if link.current %}
-                            aria-current="page"
-                          {% endif -%}
-                          {% if special_links_triggers contains link_title %}
-                            style="--special-link-color: {{ section.settings.special_link_color }}"
-                          {% endif %}
-                        >
-                          {{- link.title | escape -}}
-                        </a>
-                      {%- endif -%}
-                    </li>
-                  {%- elsif link_title != 'beratung' -%}
-                    <li class="custom-primary-nav__item  primary-nav__item{% if link.active %} primary-nav__item--active{% endif %} f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                      {%- if link.links != blank -%}
-                        <header-details-disclosure>
-                          <details
-                            id="Details-HeaderMenu-{{ forloop.index }}"
-                            data-link-title="{{ link.title | escape }}"
-                          >
-                            <summary class="header__menu-item">
-                              <a
-                                href="{{ link.url }}"
-                                class="primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                                {% if link.current %}
-                                  aria-current="page"
-                                {% endif -%}
-                                {% if special_links_triggers contains link_title %}
-                                  style="--special-link-color: {{ section.settings.special_link_color }}"
-                                {% endif %}
-                              >
-                                {{- link.title | escape -}}
-                                {%- if section.settings.enable_chevrons -%}
-                                  {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                                {%- endif -%}
-                              </a>
-                            </summary>
-                            <div id="HeaderMenu-MenuList-{{ forloop.index }}" class="nav__sub" tabindex="-1">
-                              <nested-menu class="nav__sub-wrap">
-                                <ul class="list-menu has-animation" role="list" style="animation-delay: 100ms">
-                                  {%- for childlink in link.links -%}
-                                    <li class="list-menu__item">
-                                      {%- if childlink.links == blank -%}
-                                        <a
-                                          href="{{ childlink.url }}"
-                                          class="list-menu__link"
-                                          {% if childlink.current %}
-                                            aria-current="page"
-                                          {% endif %}
-                                        >
-                                          <span class="list-menu__text {% if childlink.title == 'UTHEVER®' %}notranslate{% endif %}">
-                                            {{- childlink.title | escape -}}
-                                          </span>
-                                        </a>
-                                      {%- else -%}
-                                        <header-details-disclosure>
-                                          <details id="Details-HeaderSubMenu-{{ forloop.index }}">
-                                            <summary class="header__menu-item list-menu__link">
-                                              <a
-                                                href="{{ childlink.url }}"
-                                                class="list-menu__text"
-                                                {% if link.current %}
-                                                  aria-current="page"
-                                                {% endif %}
-                                              >
-                                                {{ childlink.title | escape }}
-                                              </a>
-                                              {%- render 'icons-theme', icon: 'chevron' -%}
-                                            </summary>
-                                            <div
-                                              id="HeaderSubMenu-MenuList-{{ forloop.index }}"
-                                              class="nav__sub-t"
-                                              tabindex="-1"
-                                            >
-                                              <div class="nav__sub-t-wrap">
-                                                <ul class="list-menu has-animation" style="animation-delay: 100ms">
-                                                  {%- for grandchildlink in childlink.links -%}
-                                                    <li class="list-menu__item">
-                                                      <a
-                                                        href="{{ grandchildlink.url }}"
-                                                        class="list-menu__link"
-                                                        {% if grandchildlink.current %}
-                                                          aria-current="page"
-                                                        {% endif %}
-                                                      >
-                                                        <span class="list-menu__text">
-                                                          {{- grandchildlink.title | escape -}}
-                                                        </span>
-                                                      </a>
-                                                    </li>
-                                                  {%- endfor -%}
-                                                </ul>
-                                              </div>
-                                            </div>
-                                          </details>
-                                        </header-details-disclosure>
-                                      {%- endif -%}
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              </nested-menu>
-                            </div>
-                          </details>
-                        </header-details-disclosure>
-                      {%- else -%}
-                        <a
-                          href="{{ link.url }}"
-                          class="custom-primary-link  primary-nav__link{% if special_links_triggers contains link_title %} primary-nav__link--special{% endif %}"
-                          {% if link.current %}
-                            aria-current="page"
-                          {% endif -%}
-                          {% if special_links_triggers contains link_title %}
-                            style="--special-link-color: {{ section.settings.special_link_color }}"
-                          {% endif %}
-                        >
-                          {{- link.title | escape -}}
-                        </a>
-                      {%- endif -%}
-                    </li>
                   {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </nested-menu>
-        </nav>
-      {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </nested-menu>
+          </nav>
+        {%- endif -%}
 
-      <nav class="secondary-nav header-navs__items js-secondary-nav">
-        <div class="secondary-nav__items secondary-nav__items--{{ section.settings.link_style }}">
-          {%- liquid
-            assign country_selector = false
-            assign language_selector = false
-            assign show_selectors = false
+        <nav class="secondary-nav header-navs__items js-secondary-nav">
+          <div class="secondary-nav__items secondary-nav__items--{{ section.settings.link_style }}">
+            {%- liquid
+              assign country_selector = false
+              assign language_selector = false
+              assign show_selectors = false
 
-            if section.settings.enable_country_selector and localization.available_countries.size > 1
-              assign country_selector = true
-            endif
+              if section.settings.enable_country_selector and localization.available_countries.size > 1
+                assign country_selector = true
+              endif
 
-            if section.settings.enable_language_selector and localization.available_languages.size > 1
-              assign language_selector = true
-            endif
+              if section.settings.enable_language_selector and localization.available_languages.size > 1
+                assign language_selector = true
+              endif
 
-            if country_selector or language_selector
-              assign show_selectors = true
-            endif
-          -%}
+              if country_selector or language_selector
+                assign show_selectors = true
+              endif
+            -%}
 
-          <ul class="secondary-nav__localize js-secondary-nav-localize">
-            {%- if show_selectors -%}
-              <li class="secondary-nav__item secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                <script src="{{ 'localize-form.js' | asset_url }}" type="module"></script>
-                {%- form 'localization', id: 'HeaderLocalizeForm', class: 'localize__form' -%}
-                  {%- if country_selector -%}
-                    <header-details-disclosure>
-                      <details
-                        id="Details-HeaderCountrySelector"
-                        aria-label="{{ 'general.country.dropdown_label' | t }}"
-                      >
-                        <summary class="secondary-nav__link">
-                          {{ localization.country.name }}
-                          {% if localization.country.iso_code == 'DE' %}/ World{% endif %} (
-                          {{- localization.country.currency.iso_code }}
-                          {{ localization.country.currency.symbol }})
-                          {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                        </summary>
-                        <div
-                          id="HeaderCountrySelector-MenuList"
-                          class="nav__sub nav__sub--header-localize js-localize-wrapper"
-                          tabindex="-1"
+            <ul class="secondary-nav__localize js-secondary-nav-localize">
+              {%- if show_selectors -%}
+                <li class="secondary-nav__item secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                  <script src="{{ 'localize-form.js' | asset_url }}" type="module"></script>
+                  {%- form 'localization', id: 'HeaderLocalizeForm', class: 'localize__form' -%}
+                    {%- if country_selector -%}
+                      <header-details-disclosure>
+                        <details
+                          id="Details-HeaderCountrySelector"
+                          aria-label="{{ 'general.country.dropdown_label' | t }}"
                         >
-                          <localize-form class="nav__sub-wrap nav__sub-wrap--country">
-                            <ul class="list-menu has-animation" style="animation-delay: 100ms">
-                              {%- for country in localization.available_countries -%}
-                                <li class="list-menu__item{% if country.iso_code == localization.country.iso_code %} list-menu__item--active{% endif %}">
-                                  <a
-                                    href="#"
-                                    class="list-menu__link js-localize-item"
-                                    {% if country.iso_code == localization.country.iso_code %}
-                                      aria-current="true"
-                                    {% endif %}
-                                    data-value="{{ country.iso_code }}"
-                                  >
-                                    <span class="list-menu__text">
-                                      {{- country.name }}
-                                      {% if country.iso_code == 'DE' %}/ World{% endif %}
-                                      <span class="localization-form__country"
-                                        >({{ country.currency.iso_code }}
-                                        {{ country.currency.symbol }})</span
-                                      ></span
+                          <summary class="secondary-nav__link">
+                            {{ localization.country.name }}
+                            {% if localization.country.iso_code == 'DE' %}/ World{% endif %} (
+                            {{- localization.country.currency.iso_code }}
+                            {{ localization.country.currency.symbol }})
+                            {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                          </summary>
+                          <div
+                            id="HeaderCountrySelector-MenuList"
+                            class="nav__sub nav__sub--header-localize js-localize-wrapper"
+                            tabindex="-1"
+                          >
+                            <localize-form class="nav__sub-wrap nav__sub-wrap--country">
+                              <ul class="list-menu has-animation" style="animation-delay: 100ms">
+                                {%- for country in localization.available_countries -%}
+                                  <li class="list-menu__item{% if country.iso_code == localization.country.iso_code %} list-menu__item--active{% endif %}">
+                                    <a
+                                      href="#"
+                                      class="list-menu__link js-localize-item"
+                                      {% if country.iso_code == localization.country.iso_code %}
+                                        aria-current="true"
+                                      {% endif %}
+                                      data-value="{{ country.iso_code }}"
                                     >
-                                  </a>
-                                </li>
-                              {%- endfor -%}
-                            </ul>
-                            <input
-                              type="hidden"
-                              name="country_code"
-                              value="{{ localization.country.iso_code }}"
-                              data-localize-input
-                            >
-                          </localize-form>
-                        </div>
-                      </details>
-                    </header-details-disclosure>
-                  {%- endif -%}
-
-                  {%- if language_selector -%}
-                    <header-details-disclosure>
-                      <details
-                        id="Details-HeaderLanguageSelector"
-                        aria-label="{{ 'general.language.dropdown_label' | t }}"
-                      >
-                        <summary class="secondary-nav__link">
-                          {{ localization.language.endonym_name | capitalize }}
-                          {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
-                        </summary>
-                        <div
-                          id="HeaderLanguageSelector-MenuList"
-                          class="nav__sub nav__sub--header-localize js-localize-wrapper"
-                          tabindex="-1"
-                        >
-                          <localize-form class="nav__sub-wrap nav__sub-wrap--lang">
-                            <ul class="list-menu has-animation" style="animation-delay: 100ms">
-                              {%- for language in localization.available_languages -%}
-                                <li class="list-menu__item{% if language.iso_code == localization.language.iso_code %} list-menu__item--active{% endif %}">
-                                  <a
-                                    href="#"
-                                    class="list-menu__link js-localize-item"
-                                    {% if language.iso_code == localization.language.iso_code %}
-                                      aria-current="true"
-                                    {% endif %}
-                                    data-value="{{ language.iso_code }}"
-                                  >
-                                    <span class="list-menu__text">{{ language.endonym_name | capitalize }}</span>
-                                  </a>
-                                </li>
-                              {%- endfor -%}
-                            </ul>
-                            <input
-                              type="hidden"
-                              name="locale_code"
-                              value="{{ localization.language.iso_code }}"
-                              data-localize-input
-                            >
-                          </localize-form>
-                        </div>
-                      </details>
-                    </header-details-disclosure>
-                  {%- endif -%}
-                {%- endform -%}
-              </li>
-            {%- endif -%}
-          </ul>
-          <ul class="secondary-nav__actions js-secondary-nav-actions">
-            <!-- <li class="secondary-nav__item" id="app-localization" style="vertical-align: super;"></li> -->
-            {% if shop.customer_accounts_enabled %}
-              {% if customer %}
-                <li class="secondary-nav__item secondary-nav__item--account secondary-nav__link--{{ section.settings.link_style }}{% if section.settings.link_style == 'word' %} secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}{% endif %}">
-                  <a
-                    href="{{ routes.account_url }}"
-                    class="secondary-nav__link"
-                    aria-label="{{ 'layout.customer.account' | t }}"
-                  >
-                    {%- if section.settings.link_style == 'icon' -%}
-                      {% render 'icons-theme', icon: 'user' %}
-                    {%- else -%}
-                      {{ 'layout.customer.account' | t }}
+                                      <span class="list-menu__text">
+                                        {{- country.name }}
+                                        {% if country.iso_code == 'DE' %}/ World{% endif %}
+                                        <span class="localization-form__country"
+                                          >({{ country.currency.iso_code }}
+                                          {{ country.currency.symbol }})</span
+                                        ></span
+                                      >
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                              <input
+                                type="hidden"
+                                name="country_code"
+                                value="{{ localization.country.iso_code }}"
+                                data-localize-input
+                              >
+                            </localize-form>
+                          </div>
+                        </details>
+                      </header-details-disclosure>
                     {%- endif -%}
-                  </a>
+
+                    {%- if language_selector -%}
+                      <header-details-disclosure>
+                        <details
+                          id="Details-HeaderLanguageSelector"
+                          aria-label="{{ 'general.language.dropdown_label' | t }}"
+                        >
+                          <summary class="secondary-nav__link">
+                            {{ localization.language.endonym_name | capitalize }}
+                            {%- render 'icons-theme', icon: 'chevron', additional_classes: 'icon--down' -%}
+                          </summary>
+                          <div
+                            id="HeaderLanguageSelector-MenuList"
+                            class="nav__sub nav__sub--header-localize js-localize-wrapper"
+                            tabindex="-1"
+                          >
+                            <localize-form class="nav__sub-wrap nav__sub-wrap--lang">
+                              <ul class="list-menu has-animation" style="animation-delay: 100ms">
+                                {%- for language in localization.available_languages -%}
+                                  <li class="list-menu__item{% if language.iso_code == localization.language.iso_code %} list-menu__item--active{% endif %}">
+                                    <a
+                                      href="#"
+                                      class="list-menu__link js-localize-item"
+                                      {% if language.iso_code == localization.language.iso_code %}
+                                        aria-current="true"
+                                      {% endif %}
+                                      data-value="{{ language.iso_code }}"
+                                    >
+                                      <span class="list-menu__text">{{ language.endonym_name | capitalize }}</span>
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                              <input
+                                type="hidden"
+                                name="locale_code"
+                                value="{{ localization.language.iso_code }}"
+                                data-localize-input
+                              >
+                            </localize-form>
+                          </div>
+                        </details>
+                      </header-details-disclosure>
+                    {%- endif -%}
+                  {%- endform -%}
                 </li>
-              {% else %}
-                <li class="secondary-nav__item secondary-nav__item--account secondary-nav__link--{{ section.settings.link_style }}{% if section.settings.link_style == 'word' %} secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}{% endif %}">
+              {%- endif -%}
+            </ul>
+            <ul class="secondary-nav__actions js-secondary-nav-actions">
+              <!-- <li class="secondary-nav__item" id="app-localization" style="vertical-align: super;"></li> -->
+              {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                  <li class="secondary-nav__item secondary-nav__item--account secondary-nav__link--{{ section.settings.link_style }}{% if section.settings.link_style == 'word' %} secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}{% endif %}">
+                    <a
+                      href="{{ routes.account_url }}"
+                      class="secondary-nav__link"
+                      aria-label="{{ 'layout.customer.account' | t }}"
+                    >
+                      {%- if section.settings.link_style == 'icon' -%}
+                        {% render 'icons-theme', icon: 'user' %}
+                      {%- else -%}
+                        {{ 'layout.customer.account' | t }}
+                      {%- endif -%}
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="secondary-nav__item secondary-nav__item--account secondary-nav__link--{{ section.settings.link_style }}{% if section.settings.link_style == 'word' %} secondary-nav__item--light f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}{% endif %}">
+                    <a
+                      href="{{ routes.account_login_url }}"
+                      class="secondary-nav__link"
+                      aria-label="{{ 'layout.customer.account' | t }}"
+                    >
+                      {%- if section.settings.link_style == 'icon' -%}
+                        {% render 'icons-theme', icon: 'user' %}
+                      {%- else -%}
+                        {{ 'layout.customer.log_in' | t }}
+                      {%- endif -%}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endif %}
+
+              <li class="secondary-nav__item f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
+                <cart-link>
+                  {%- unless request.page_type == 'cart' -%}
+                    <a
+                      href="{{ routes.cart_url }}"
+                      class="
+                        secondary-nav__link
+                        secondary-nav__item--cart
+                        secondary-nav__link--{{ section.settings.link_style }}
+                      "
+                      aria-haspopup="dialog"
+                      aria-label="{{ 'layout.cart.title' | t }}"
+                      {% if settings.cart_type == 'modal' %}
+                        data-a11y-dialog-show="modal-cart"
+                      {% endif %}
+                    >
+                      {%- if section.settings.link_style == 'icon' -%}
+                        {% render 'icons-theme', icon: 'cart' %}
+                        <div class="cart-count-bubble">
+                          <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
+                        </div>
+                      {%- else -%}
+                        {{ 'layout.cart.title' | t }} (<items-count>{{ cart.item_count }}</items-count>)
+                      {%- endif -%}
+                    </a>
+                  {%- else -%}
+                    <span class="secondary-nav__link secondary-nav__item--cart secondary-nav__link--{{ section.settings.link_style }}">
+                      {%- if section.settings.link_style == 'icon' -%}
+                        {% render 'icons-theme', icon: 'cart' %}
+                        <span class="cart-count-bubble">
+                          <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
+                        </span>
+                      {%- else -%}
+                        {{ 'layout.cart.title' | t }} (<items-count>{{ cart.item_count }}</items-count>)
+                      {%- endif -%}
+                    </span>
+                  {%- endunless -%}
+                </cart-link>
+              </li>
+
+              {% if settings.search_enable %}
+                <li class="secondary-nav__item secondary-nav__item--search f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
                   <a
-                    href="{{ routes.account_login_url }}"
-                    class="secondary-nav__link"
-                    aria-label="{{ 'layout.customer.account' | t }}"
+                    href="{{ routes.search_url }}"
+                    class="secondary-nav__link secondary-nav__link--search secondary-nav__link--{{ section.settings.link_style }}"
+                    aria-haspopup="dialog"
+                    aria-label="{{ 'layout.navigation.search' | t }}"
+                    data-a11y-dialog-show="modal-search"
                   >
                     {%- if section.settings.link_style == 'icon' -%}
-                      {% render 'icons-theme', icon: 'user' %}
+                      {% render 'icons-theme', icon: 'search' %}
                     {%- else -%}
-                      {{ 'layout.customer.log_in' | t }}
+                      {{ 'layout.navigation.search' | t }}
                     {%- endif -%}
                   </a>
                 </li>
               {% endif %}
-            {% endif %}
-
-            <li class="secondary-nav__item f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-              <cart-link>
-                {%- unless request.page_type == 'cart' -%}
-                  <a
-                    href="{{ routes.cart_url }}"
-                    class="
-                      secondary-nav__link
-                      secondary-nav__item--cart
-                      secondary-nav__link--{{ section.settings.link_style }}
-                    "
-                    aria-haspopup="dialog"
-                    aria-label="{{ 'layout.cart.title' | t }}"
-                    {% if settings.cart_type == 'modal' %}
-                      data-a11y-dialog-show="modal-cart"
-                    {% endif %}
-                  >
-                    {%- if section.settings.link_style == 'icon' -%}
-                      {% render 'icons-theme', icon: 'cart' %}
-                      <div class="cart-count-bubble">
-                        <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
-                      </div>
-                    {%- else -%}
-                      {{ 'layout.cart.title' | t }} (<items-count>{{ cart.item_count }}</items-count>)
-                    {%- endif -%}
-                  </a>
-                {%- else -%}
-                  <span class="secondary-nav__link secondary-nav__item--cart secondary-nav__link--{{ section.settings.link_style }}">
-                    {%- if section.settings.link_style == 'icon' -%}
-                      {% render 'icons-theme', icon: 'cart' %}
-                      <span class="cart-count-bubble">
-                        <items-count aria-hidden="true">{{ cart.item_count }}</items-count>
-                      </span>
-                    {%- else -%}
-                      {{ 'layout.cart.title' | t }} (<items-count>{{ cart.item_count }}</items-count>)
-                    {%- endif -%}
-                  </span>
-                {%- endunless -%}
-              </cart-link>
-            </li>
-
-            {% if settings.search_enable %}
-              <li class="secondary-nav__item secondary-nav__item--search f-family--{{ settings.type_nav_style }} f-caps--{{ settings.type_nav_capitalize }} f-space--{{ settings.type_nav_letterspace }}">
-                <a
-                  href="{{ routes.search_url }}"
-                  class="secondary-nav__link secondary-nav__link--search secondary-nav__link--{{ section.settings.link_style }}"
-                  aria-haspopup="dialog"
-                  aria-label="{{ 'layout.navigation.search' | t }}"
-                  data-a11y-dialog-show="modal-search"
-                >
-                  {%- if section.settings.link_style == 'icon' -%}
-                    {% render 'icons-theme', icon: 'search' %}
-                  {%- else -%}
-                    {{ 'layout.navigation.search' | t }}
-                  {%- endif -%}
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
-      </nav>
-    </div>
-  </header>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
   </div>
   <script>
     theme.setUpHeaderResizeObservers();
@@ -2106,6 +2121,11 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_alternative",
+      "label": "Alternative logo image"
     },
     {
       "type": "header",

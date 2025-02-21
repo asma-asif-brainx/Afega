@@ -1,3 +1,8 @@
+{% style %}
+     .section--{{ section.id }} .add-custom-section-bg-color{
+    background-color:  #F7F7F7;
+  }
+{% endstyle %}
 {% assign shop_language = localization.language.iso_code %}
 {% assign target_language = section.settings.locale %}
 
@@ -42,7 +47,7 @@
         --space-bottom: {{ section.settings.padding_bottom }}px
       "
     >
-      <div class="container">
+      <div class="{% if section.settings.add-custom-section-bg-color %} add-custom-section-bg-color {% endif %} container">
         <div class="custom-word-break-main custom-content__items">
           <div class="o-layout o-layout--center js-animate-sequence">
             {% for block in section.blocks %}
@@ -232,6 +237,11 @@
   "name": "Custom content",
   "class": "js-section__custom-content",
   "settings": [
+    {
+      "type": "checkbox",
+      "label": "add-custom-section-bg-color",
+      "id": "add-custom-section-bg-color"
+    },
     {
       "type": "select",
       "id": "locale",

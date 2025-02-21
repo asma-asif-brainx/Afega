@@ -1,3 +1,38 @@
+{% style %}
+  @media screen and (min-width: 768px){
+    .banner-inline-img-text{
+      display: flex;
+      flex-direction: row;
+      gap:10px;
+      align-items:center;
+      justify-content: center;
+    }
+    .banner-inline-img-text p{
+      margin: 0 !important;
+    }
+    .section--{{ section.id }} .quiz_image_text_banner, .section--{{ section.id }} .quiz_image_text_banner h2  {
+      color: white;
+    }
+    .section--{{ section.id }} .quiz_image_text_banner .image-banner__link{
+      background: #F89201 !important;
+    }
+    {%- for block in section.blocks -%}
+      .section--{{ section.id }} .quiz_image_text_banner h2.quiz-heading-{{ block.id }}{
+        font-size:  {{ block.settings.custom-desktop-heading-size }}px !important;
+        font-weight: {{ block.settings.custom-heading-weight }}  !important;
+        width: 700px !important;
+      }
+      .section--{{ section.id }} .quiz_image_text_banner .quiz_rte-{{ block.id }}{
+        width: 400px;
+      }
+      .section--{{ section.id }} .quiz_image_text_banner .image-banner__content__block--text{
+        justify-content: center;
+        display: flex;
+      }
+    {% endfor %}
+  }
+{% endstyle %}
+
 {% if section.index > 2 or section.location == 'footer' %}
   <link
     rel="stylesheet"
@@ -17,6 +52,7 @@
 
 <section
   class="
+    {% if section.settings.add-container-class %} container {% endif %}
     section
     section--{{ section.id }}
     section--{{ section.settings.section_width }}
@@ -125,7 +161,7 @@
         ></div>
       {% endunless %}
 
-      <div class="image-banner__content">
+      <div class="{% if section.settings.add_quiz_class %} quiz_image_text_banner {% endif %} image-banner__content">
         {%- liquid
           assign modals = ''
         -%}
@@ -151,7 +187,7 @@
                     max-width:{{ block.settings.text_width | times: 15 }}px
                   "
                 >
-                  <h2>{{ block.settings.heading | escape }}</h2>
+                  <h2 class="quiz-heading-{{ block.id }}">{{ block.settings.heading | escape }}</h2>
                 </div>
               </div>
 
@@ -175,7 +211,7 @@
                     max-width:{{ block.settings.text_width | times: 15 }}px
                   "
                 >
-                  <div class="rte">{{ block.settings.text }}</div>
+                  <div class="rte quiz_rte-{{ block.id }}">{{ block.settings.text }}</div>
                 </div>
               </div>
 
@@ -202,6 +238,9 @@
                       width: image_width,
                       height: image_height
                     %}
+                    {% if block.settings['add-inlineimg-url'] != blank %}
+                      <a href="{{ block.settings.add-inlineimg-url }}" target="_blank" rel="noopener noreferrer">
+                    {% endif %}
                     <img
                       class="image-banner__media-img image-banner__media-img--{{ block.id }}"
                       src="{{ block.settings.inline_image | image_url: width: 300 }}"
@@ -219,6 +258,9 @@
                       loading="lazy"
                       sizes="(min-width: 769px) {{ block.settings.inline_image_width }}px, {{ block.settings.inline_image_width_mobile }}px"
                     >
+                    {% if block.settings['add-inlineimg-url'] != blank %}
+                      </a>
+                    {% endif %}
                   </div>
                 </div>
               {% endunless %}
@@ -379,6 +421,13 @@
                   {{ block.settings.custom_liquid }}
                 </div>
               </div>
+            {% when 'inline_text_image' %}
+              <div class="banner-inline-img-text">
+                {% if block.settings['icon-image'] != blank %}
+                  {{ block.settings['icon-image'] | image_url: width: 89 | image_tag }}
+                {% endif %}
+                <p>{{ block.settings['text-for-icon'] }}</p>
+              </div>
           {%- endcase -%}
         {%- endfor -%}
       </div>
@@ -396,6 +445,16 @@
   "name": "Image and text banner",
   "class": "js-section__image-banner",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "add-container-class",
+      "label": "add container class to banner section"
+    },
+    {
+      "type": "checkbox",
+      "label": "Add quiz class in text content",
+      "id": "add_quiz_class"
+    },
     {
       "type": "header",
       "content": "Images"
@@ -562,9 +621,57 @@
   ],
   "blocks": [
     {
+      "type": "inline_text_image",
+      "name": "inline_text_image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon-image",
+          "label": "Add icon image"
+        },
+        {
+          "type": "text",
+          "id": "text-for-icon",
+          "label": "Add text for icon"
+        }
+      ]
+    },
+    {
       "type": "heading",
       "name": "Heading",
       "settings": [
+        {
+          "type": "range",
+          "id": "custom-desktop-heading-size",
+          "label": "custom desktop heading size",
+          "min": 1,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "id": "custom-heading-weight",
+          "label": "custom heading weight",
+          "type": "select",
+          "options": [
+            {
+              "value": "400",
+              "label": "400"
+            },
+            {
+              "value": "500",
+              "label": "500"
+            },
+            {
+              "value": "600",
+              "label": "600"
+            },
+            {
+              "value": "700",
+              "label": "700"
+            }
+          ]
+        },
         {
           "type": "text",
           "id": "heading",
@@ -734,6 +841,11 @@
       "type": "image",
       "name": "Inline image",
       "settings": [
+        {
+          "type": "url",
+          "id": "add-inlineimg-url",
+          "label": "add-inlineimg-url"
+        },
         {
           "type": "image_picker",
           "id": "inline_image",

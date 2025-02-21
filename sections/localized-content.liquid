@@ -1,4 +1,7 @@
 {% style %}
+  .section--{{ section.id }} .add-custom-section-bg-color, .section--{{ section.id }} .add-custom-section-bg-color:hover {
+    background-color:  #F7F7F7;
+  }
   #shopify-section-{{ section.id }} .o-layout--center .o-layout__item {
     text-align: left;
   }
@@ -44,7 +47,7 @@
       --space-bottom: {{ section.settings.padding_bottom }}px
     "
   >
-    <div class="container">
+    <div class="{% if section.settings.add-custom-section-bg-color %} add-custom-section-bg-color {% endif %} container">
       <div class="custom-word-break-main custom-content__items">
         <div class="o-layout o-layout--center js-animate-sequence">
           {% content_for 'blocks' %}
@@ -65,6 +68,11 @@
   "name": "Localized Content",
   "class": "js-section__custom-content",
   "settings": [
+    {
+      "type": "checkbox",
+      "label": "add-custom-section-bg-color",
+      "id": "add-custom-section-bg-color"
+    },
     {
       "type": "header",
       "content": "Padding and margin"

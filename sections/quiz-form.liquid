@@ -341,269 +341,272 @@
     </div>
 
     <script>
-               
-              var questions = {{questions | json }}
-             console.log("questions", questions)
-              let currentPage = 0;
-              let selectedAnswers = [];
-              const requiredAnswers = 2;
-        
-              function renderQuestions() {
-                const container = document.getElementById('questions-container');
-                container.innerHTML = '';
-        
-                const startIndex = currentPage * 10;
-                const endIndex = startIndex + 10;
-        
-                for (let i = startIndex; i < endIndex && i < questions.length; i++) {
-                  const question = questions[i].question;
-                  const questionDiv = document.createElement('div');
-                  questionDiv.classList.add('question-item');
-        
-                  questionDiv.innerHTML = `
-                <label class="question-label">Q-${i + 1}: ${question}</label>
-                <div class="options">
-                    <label class="option-label">
-                        <input type="radio" name="q-${i}" value="3" ${Object.entries(questions[i]).map(([key, value]) => {
-                            return `data-${key}="${3 * value}"`;
-                        }).join(' ')} onchange="saveAnswer(${i}, 3)">
-                        <span>✅ Ja</span>
-                    </label>
-                    <label class="option-label">
-                        <input type="radio" name="q-${i}" value="2" ${Object.entries(questions[i]).map(([key, value]) => {
-                            return `data-${key}="${2 * value}"`;
-                        }).join(' ')}  onchange="saveAnswer(${i}, 2)">
-                        <span>🤔 Manchmal / Vielleicht </span>
-                    </label>
-                    <label class="option-label">
-                        <input type="radio" name="q-${i}" value="1" ${Object.entries(questions[i]).map(([key, value]) => {
-                            return `data-${key}="${1 * value}"`;
-                        }).join(' ')}  onchange="saveAnswer(${i}, 1)">
-                        <span>❌ NEIN</span>
-                    </label>
-                </div>
-                `;
-                  container.appendChild(questionDiv);
-                }
+             
+            var questions = {{questions | json }}
+           console.log("questions", questions)
+            let currentPage = 0;
+            let selectedAnswers = [];
+            const requiredAnswers = 2;
+      
+            function renderQuestions() {
+              const container = document.getElementById('questions-container');
+              container.innerHTML = '';
+      
+              const startIndex = currentPage * 10;
+              const endIndex = startIndex + 10;
+      
+              for (let i = startIndex; i < endIndex && i < questions.length; i++) {
+                const question = questions[i].question;
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question-item');
+      
+                questionDiv.innerHTML = `
+              <label class="question-label">Q-${i + 1}: ${question}</label>
+              <div class="options">
+                  <label class="option-label">
+                      <input type="radio" name="q-${i}" value="3" ${Object.entries(questions[i]).map(([key, value]) => {
+                          return `data-${key}="${3 * value}"`;
+                      }).join(' ')} onchange="saveAnswer(${i}, 3)">
+                      <span>✅ Ja</span>
+                  </label>
+                  <label class="option-label">
+                      <input type="radio" name="q-${i}" value="2" ${Object.entries(questions[i]).map(([key, value]) => {
+                          return `data-${key}="${2 * value}"`;
+                      }).join(' ')}  onchange="saveAnswer(${i}, 2)">
+                      <span>🤔 Manchmal / Vielleicht </span>
+                  </label>
+                  <label class="option-label">
+                      <input type="radio" name="q-${i}" value="1" ${Object.entries(questions[i]).map(([key, value]) => {
+                          return `data-${key}="${1 * value}"`;
+                      }).join(' ')}  onchange="saveAnswer(${i}, 1)">
+                      <span>❌ NEIN</span>
+                  </label>
+              </div>
+              `;
+                container.appendChild(questionDiv);
               }
-        
-              function saveAnswer(index, weight) {
-                selectedAnswers[index] = weight;
-                updateSubmitButton();
+            }
+      
+            function saveAnswer(index, weight) {
+              selectedAnswers[index] = weight;
+              updateSubmitButton();
+            }
+      
+            function updateSubmitButton() {
+              const totalAnswered = selectedAnswers.filter((ans) => ans !== undefined).length;
+              document.getElementById('submit-btn').disabled = totalAnswered < requiredAnswers;
+            }
+      
+            function nextPage() {
+              if ((currentPage + 1) * 10 < questions.length) {
+                currentPage++;
+                renderQuestions();
+                updateButtons();
               }
-        
-              function updateSubmitButton() {
-                const totalAnswered = selectedAnswers.filter((ans) => ans !== undefined).length;
-                document.getElementById('submit-btn').disabled = totalAnswered < requiredAnswers;
+            }
+      
+            function prevPage() {
+              if (currentPage > 0) {
+                currentPage--;
+                renderQuestions();
+                updateButtons();
               }
-        
-              function nextPage() {
-                if ((currentPage + 1) * 10 < questions.length) {
-                  currentPage++;
-                  renderQuestions();
-                  updateButtons();
-                }
-              }
-        
-              function prevPage() {
-                if (currentPage > 0) {
-                  currentPage--;
-                  renderQuestions();
-                  updateButtons();
-                }
-              }
-        
-              function updateButtons() {
-                document.getElementById('prev-btn').disabled = currentPage === 0;
-                document.getElementById('next-btn').disabled = (currentPage + 1) * 10 >= questions.length;
-              }
-        
-              function submitQuiz() {
-                let totalScores = {};
-            
-                // Loop through each question index
-                for (let i = 0; i < questions.length; i++) {
-                  // Get the checked radio input for question i
-                  const checkedInput = document.querySelector(`input[name="q-${i}"]:checked`);
-                  if (checkedInput) {
-                    // For each data attribute on the selected radio, add its value to the total
-                    for (const key in checkedInput.dataset) {
-                      const value = parseFloat(checkedInput.dataset[key]) || 0;
-                      if (!totalScores[key]) {
-                        totalScores[key] = 0;
-                      }
-                      totalScores[key] += value;
+            }
+      
+            function updateButtons() {
+              document.getElementById('prev-btn').disabled = currentPage === 0;
+              document.getElementById('next-btn').disabled = (currentPage + 1) * 10 >= questions.length;
+            }
+      
+            function submitQuiz() {
+              let totalScores = {};
+          
+              // Loop through each question index
+              for (let i = 0; i < questions.length; i++) {
+                // Get the checked radio input for question i
+                const checkedInput = document.querySelector(`input[name="q-${i}"]:checked`);
+                if (checkedInput) {
+                  // For each data attribute on the selected radio, add its value to the total
+                  for (const key in checkedInput.dataset) {
+                    const value = parseFloat(checkedInput.dataset[key]) || 0;
+                    if (!totalScores[key]) {
+                      totalScores[key] = 0;
                     }
+                    totalScores[key] += value;
                   }
                 }
-            
-                // Sort substances by total score descending, then take the top 5
-                const sortedSubstances = Object.entries(totalScores)
-                  .sort((a, b) => b[1] - a[1])
-                  .slice(0, 5);
-            
-                let resultMessage = 'Top 5 Recommended Substances:\n';
-                sortedSubstances.forEach(([substance, score]) => {
-                  resultMessage += `${substance}: ${score}\n`;
-                });
-            console.log("1st:" ,resultMessage)
-    
-                
-            
-                // Save top substances globally as lowercase for later comparison
-                window.resultMessage = sortedSubstances.map(([substance]) => substance.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
-                console.log("resultMessage" , resultMessage);
-    
-                // Preloaded products array via Liquid (see your existing code)
-                var allProducts = [
-                  {% for product in collections.all.products %}
-                  {
-                    title: "{{ product.title }}",
-                    sku: "{{ product.variants.first.sku }}", 
-                    url: "{{ product.url }}",
-                    variant_id: "{{ product.variants.first.id }}",
-           
-                  short_desc:   '{{ product.metafields.custom.p_short_desc }}',
-                    substances: "{{ product.metafields.custom.product_substances.value }}",
-                    featured_image: "{{ product.featured_image | img_url: 'small' }}",
-                    body_html: `{{ product.body_html | strip_newlines | escape }}`
-                  }{% unless forloop.last %},{% endunless %}
-                  {% endfor %}
-                ];
-    
-              
-                console.log("All Products:", allProducts);
-                var substancesSet = new Set();
-    
-                function addSubstance(substance) {
-                    substancesSet.add(substance); // Add only unique values
-                    let substancesString = Array.from(substancesSet).join(", "); // Convert set to a comma-separated string
-                    return substancesString;
-                }
-                // Filter products based on matching substances (convert product substances to lowercase array)
-                var matchingProducts = allProducts.filter(product => {
-                  if (!product.substances || product.substances.trim() === "") return false;
-                  
-                  console.log("product.substances", product.substances);
-                  let productSubstances = product.substances.split(",").map(s => s.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
-                  return window.resultMessage.some(substance => productSubstances.includes(substance));
-                });
-                matchingProducts.map(product => { addSubstance(product.substances) });
-                console.log("Matching Products:", substancesSet);
-                // Save matching products globally for later display
-                window.matchingProducts = matchingProducts;
-    
-                console.log("real matched" ,  window.matchingProducts )
-            
-                window.substancesSet = substancesSet;
-                // Hide quiz form and display thank-you container
-                document.querySelector('.quiz-form-main').style.display = 'none';
-                document.querySelector('.thankyou-container').style.display = 'block';
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                  });
               }
-            
-              renderQuestions();
-            
-              // When the user clicks the thank-you button, hide thank-you and show recommended-products
-              document.querySelector('.thankyou-button').addEventListener('click', function() {
-                // Hide thank-you container and show recommended-products container
-                document.querySelector('.thankyou-container').style.display = 'none';
-                document.querySelector('.recommended-products').style.display = 'block';
-            
-                // Update the note with top substances.
-                const substancesNote = document.querySelector('.substances-note');
-                substancesNote.innerText = 'Nachfolgend finden Sie die empfohlenen Produkte basierend auf den Top-Substanzen Ihres Quizergebnisses: ' +Array.from(window.substancesSet).join(", ");
-            
-                // Display the matching products in the product-list container.
-                displayProducts(window.matchingProducts);
+          
+              // Sort substances by total score descending, then take the top 5
+              const sortedSubstances = Object.entries(totalScores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+          
+              let resultMessage = 'Top 5 Recommended Substances:\n';
+              sortedSubstances.forEach(([substance, score]) => {
+                resultMessage += `${substance}: ${score}\n`;
               });
-            
-              // Function to display matching products
-              function displayProducts(products) {
-                let productContainer = document.getElementById("product-list");
-                productContainer.innerHTML = ""; // Clear previous results
-            
-                if (products.length === 0) {
-                    productContainer.innerHTML = "<p>No matching products found.</p>";
-                } else {
-                    products.forEach(product => {
-                        {% comment %} debugger {% endcomment %}
-                        // Generate a unique ID for each product
-                        const unique_id = product.variant_id; // or any unique identifier you prefer
-                        let product_title =  product.title;
-            console.log("product:hoor", product);
-                        // Create a hidden div to hold the product data
-                        let productHTML = `
-                            <div class="product-item" data-variant-id="${unique_id}">
-                            ${product_title}
-                                {% render 'product-card-a',
-                                    id: '${unique_id}',
-                                    title: '${product_title}',
-                                    image_sizes: 'small',
-                                    prioritize_image: true,
-                                    quick_shop_trigger: true,
-                                    small_buttons_on_mobile: true,
-                                    quick_shop_type: 'remote'
-                                %}
-                            </div>
-                        `;
-                        productContainer.innerHTML += productHTML;
-                    });
-                }
-            
-                attachAddToCartEvents();
-            }
-              function attachAddToCartEvents() {
-                const addToCartButtons = document.querySelectorAll('.add-to-cart');
-                addToCartButtons.forEach(btn => {
-                  btn.addEventListener('click', function(e) {
-                    const variantId = e.target.getAttribute('data-variant-id');
-                    // Create the payload for adding to cart (quantity: 1 in this example)
+          console.log("1st:" ,resultMessage)
+  
               
-                    fetch('/cart/add.js', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            id: variantId,
-                            quantity: 1
-    
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Product added to cart:', data);
-                    })
+          
+              // Save top substances globally as lowercase for later comparison
+              window.resultMessage = sortedSubstances.map(([substance]) => substance.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
+              console.log("resultMessage" , resultMessage);
+  
+              // Preloaded products array via Liquid (see your existing code)
+              var allProducts = [
+                {% for product in collections.all.products %}
+                {
+                  title: "{{ product.title }}",
+                  sku: "{{ product.variants.first.sku }}", 
+                  url: "{{ product.url }}",
+                  variant_id: "{{ product.variants.first.id }}",
+         
+                short_desc:   '{{ product.metafields.custom.p_short_desc }}',
+                  substances: "{{ product.metafields.custom.product_substances.value }}",
+                  featured_image: "{{ product.featured_image | img_url: 'small' }}",
+                  body_html: `{{ product.body_html | strip_newlines | escape }}`
+                }{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+              ];
+  
+            
+              console.log("All Products:", allProducts);
+              var substancesSet = new Set();
+  
+              function addSubstance(substance) {
+                  substancesSet.add(substance); // Add only unique values
+                  let substancesString = Array.from(substancesSet).join(", "); // Convert set to a comma-separated string
+                  return substancesString;
+              }
+              // Filter products based on matching substances (convert product substances to lowercase array)
+              var matchingProducts = allProducts.filter(product => {
+                if (!product.substances || product.substances.trim() === "") return false;
+                
+                console.log("product.substances", product.substances);
+                let productSubstances = product.substances.split(",").map(s => s.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
+                return window.resultMessage.some(substance => productSubstances.includes(substance));
+              });
+              matchingProducts.map(product => { addSubstance(product.substances) });
+              console.log("Matching Products:", substancesSet);
+              // Save matching products globally for later display
+              window.matchingProducts = matchingProducts;
+  
+              console.log("real matched" ,  window.matchingProducts )
+          
+              window.substancesSet = substancesSet;
+              // Hide quiz form and display thank-you container
+              document.querySelector('.quiz-form-main').style.display = 'none';
+              document.querySelector('.thankyou-container').style.display = 'block';
+              window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
                 });
-                            
-                    {% comment %} fetch('/cart/add.js', {
+            }
+          
+            renderQuestions();
+          
+            // When the user clicks the thank-you button, hide thank-you and show recommended-products
+            document.querySelector('.thankyou-button').addEventListener('click', function() {
+              // Hide thank-you container and show recommended-products container
+              document.querySelector('.thankyou-container').style.display = 'none';
+              document.querySelector('.recommended-products').style.display = 'block';
+          
+              // Update the note with top substances.
+              const substancesNote = document.querySelector('.substances-note');
+              substancesNote.innerText = 'Nachfolgend finden Sie die empfohlenen Produkte basierend auf den Top-Substanzen Ihres Quizergebnisses: ' +Array.from(window.substancesSet).join(", ");
+          
+              // Display the matching products in the product-list container.
+              displayProducts(window.matchingProducts);
+            });
+          
+            // Function to display matching products
+            function displayProducts(products) {
+              let productContainer = document.getElementById("product-list");
+              productContainer.innerHTML = ""; // Clear previous results
+          
+              if (products.length === 0) {
+                productContainer.innerHTML = "<p>No matching products found.</p>";
+              } else {
+                products.forEach(product => {
+                  
+                  let productHTML = `
+                      <div class="product-item">
+                                          <a class="product-item-link-inner" href="${product.url}" target="_blank"> 
+         
+                      <img src="${product.featured_image}" alt="${product.title}" />
+  
+                      <h2 class="quiz-product-title">${product.title}</h2>
+                      </a>
+                      <p class="quiz-product-desc">${product.short_desc}</p>
+
+                       <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="${product.variant_id}" />
+                        <input type="submit" value="In den Warenkorb legen" class="add-to-cart quiz-ATC btn product-card-btn__btn js-product-add" />
+                        </form>
+
+                     {% comment %} <button class="add-to-cart quiz-ATC" data-variant-id="${product.variant_id}">IN DEN EINKAUFSWAGEN LEGEN</button> {% endcomment %}
+  
+                    </div>
+                  
+                  `;
+                  productContainer.innerHTML += productHTML;
+                });
+              }
+  
+              attachAddToCartEvents();
+  
+            }
+  
+            function attachAddToCartEvents() {
+              const addToCartButtons = document.querySelectorAll('.add-to-cart');
+              addToCartButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                  const variantId = e.target.getAttribute('data-variant-id');
+                  // Create the payload for adding to cart (quantity: 1 in this example)
+            
+                  fetch('/cart/add.js', {
                       method: 'POST',
                       headers: {
-                        'Content-Type': 'application/json'
+                          'Content-Type': 'application/json',
+                          'Accept': 'application/json'
                       },
-                      body: JSON.stringify(payload)
-                    })
-                    .then(response => {
-                      if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                      }
-                      return response.json();
-                    })
-                    .then(data => {
-                      console.log("Product added to cart:", data);
-                      // Optionally update your cart UI here
-                    })
-                    .catch(error => {
-                      console.error("Error adding product to cart:", error);
-                    }); {% endcomment %}
-                  {% comment %} }); {% endcomment %}
-                });
-              }
+                      body: JSON.stringify({
+                          id: variantId,
+                          quantity: 1
+  
+                      })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      console.log('Product added to cart:', data);
+                  })
+              });
+                          
+                  {% comment %} fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                  })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    console.log("Product added to cart:", data);
+                    // Optionally update your cart UI here
+                  })
+                  .catch(error => {
+                    console.error("Error adding product to cart:", error);
+                  }); {% endcomment %}
+                {% comment %} }); {% endcomment %}
+              });
+            }
     </script>
   </body>
 </html>

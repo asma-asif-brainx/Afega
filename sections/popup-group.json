@@ -1,0 +1,34 @@
+{
+  "name": "Pop-ups",
+  "type": "aside",
+  "sections": {
+    "promo-pop": {
+      "type": "promo-pop",
+      "disabled": true,
+      "settings": {
+        "enable_newsletter": false,
+        "title": "",
+        "text": "<p>Dieser Shop befindet sich noch in der Testphase, und daher funktioniert möglicherweise nicht alles reibungslos. Bitte haben Sie Geduld. Teilen Sie uns unbedingt mit, wenn Ihnen Fehler auffallen. Der Shop „in seinem alten Gewand“ ist weiterhin nutzbar, falls Sie dies bevorzugen: <a href=\"https:\/\/afega-anti-aging-shop.com\">https:\/\/afega-anti-aging-shop.com<\/a><\/p>",
+        "link_title": "",
+        "link": "",
+        "delay": 1,
+        "expiry": 7
+      }
+    },
+    "age-checker": {
+      "type": "age-checker",
+      "disabled": true,
+      "settings": {
+        "title": "Age verification",
+        "text": "<p>By clicking enter you are verifying that you are old enough to consume alcohol.<\/p>",
+        "enter_btn_label": "Enter",
+        "leave_btn_label": "Leave",
+        "leave_link": ""
+      }
+    }
+  },
+  "order": [
+    "promo-pop",
+    "age-checker"
+  ]
+}

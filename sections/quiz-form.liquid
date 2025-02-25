@@ -168,63 +168,17 @@
                   background-color: #2980b9;
                   }
 
-
-                  {% comment %} Recommneded products style {% endcomment %}
-                  .recommended-products{
-                  display: none;
-
-                  }
-                  #product-list{
-                  display: flex;
-                  gap: 40px;
-                  flex-direction: row;
-                  flex-wrap: wrap;
-                  justify-content: center;
-                  margin-bottom: 30px;
-              }
-              .product-item{
-              display: flex;
-              flex-direction: column;
-              width: 20%;
-              }
-              .product-item img{
-                  height: 220px;
-                  object-fit: contain;
-              }
-              .quiz-product-title{
-              font-size: 16px;
-              color: black;
-              font-weight: 500;
-              text-align: left;
-          }
-          .quiz-product-desc{
-              font-size: 16px;
-              color: grey;
-              font-weight:Normal;
-          }
-          .quiz-product-desc a{
-              color: grey;
-          }
           .substances-note{
-              font-size: 16px;
-              font-weight: 600;
-              margin: 30px;
+              font-size: 12px;
+              font-weight: 500;
+              margin: 0px;
               text-align: center;
           }
-          .quiz-ATC
-          {
-          background-color: #2DAE06
-          }
-          .product-item-link-inner{
-            display: flex;
-              flex-direction: column;
-        }
+
+
 
           @media screen and (max-width: 980px){
-            .product-item{
 
-                width: 40%;
-            }
           .inner-thankyou, .thankyou-container{
               margin-top: 20px;
               margin-bottom: 20px;
@@ -292,7 +246,21 @@
     </style>
   </head>
   <body>
-    {% assign questions = page.metafields.custom.questions.value %}
+    
+       {% capture questions %}
+        [
+           {% paginate page.metafields.custom.questions.value by 999 %}
+
+          {% for question in page.metafields.custom.questions.value %}
+
+          {{ question | json }}
+          {%- if forloop.last == false %},{% endif %}
+
+        {% endfor %}
+
+        {% endpaginate %}
+      ]
+      {% endcapture %}
 
     <div class="quiz-form-main">
       <div class="outer-form">
@@ -331,93 +299,128 @@
           Ihr Formular wurde erfolgreich übermittelt. Basierend auf Ihren Antworten haben wir die Top-Empfehlungen für
           Sie ermittelt.
         </p>
+        <p class="substances-note"></p>
         <button class="thankyou-button">Sehen Sie sich Ihre empfohlenen Ergebnisse an</button>
       </div>
     </div>
 
     <div class="recommended-products">
-      <p class="substances-note"></p>
       <div id="product-list"></div>
     </div>
 
     <script>
-             
-            var questions = {{questions | json }}
-           console.log("questions", questions)
+            var questions = {{questions }};
             let currentPage = 0;
             let selectedAnswers = [];
-            const requiredAnswers = 2;
-      
-            function renderQuestions() {
-              const container = document.getElementById('questions-container');
-              container.innerHTML = '';
-      
-              const startIndex = currentPage * 10;
-              const endIndex = startIndex + 10;
-      
-              for (let i = startIndex; i < endIndex && i < questions.length; i++) {
-                const question = questions[i].question;
-                const questionDiv = document.createElement('div');
-                questionDiv.classList.add('question-item');
-      
-                questionDiv.innerHTML = `
-              <label class="question-label">Q-${i + 1}: ${question}</label>
-              <div class="options">
-                  <label class="option-label">
-                      <input type="radio" name="q-${i}" value="3" ${Object.entries(questions[i]).map(([key, value]) => {
-                          return `data-${key}="${3 * value}"`;
-                      }).join(' ')} onchange="saveAnswer(${i}, 3)">
-                      <span>✅ Ja</span>
-                  </label>
-                  <label class="option-label">
-                      <input type="radio" name="q-${i}" value="2" ${Object.entries(questions[i]).map(([key, value]) => {
-                          return `data-${key}="${2 * value}"`;
-                      }).join(' ')}  onchange="saveAnswer(${i}, 2)">
-                      <span>🤔 Manchmal / Vielleicht </span>
-                  </label>
-                  <label class="option-label">
-                      <input type="radio" name="q-${i}" value="1" ${Object.entries(questions[i]).map(([key, value]) => {
-                          return `data-${key}="${1 * value}"`;
-                      }).join(' ')}  onchange="saveAnswer(${i}, 1)">
-                      <span>❌ NEIN</span>
-                  </label>
-              </div>
-              `;
-                container.appendChild(questionDiv);
+            const requiredAnswers = 50;
+            const questionsPerPage = 25;
+            let questionSets = [];
+
+            // Initialize question sets once
+            function initializeQuestionSets() {
+              for (let i = 0; i < questions.length; i += questionsPerPage) {
+                const questionSet = questions.slice(i, i + questionsPerPage).map((question, index) => {
+                  const absoluteIndex = i + index;
+                  return `
+                    <div class="question-item">
+                      <label class="question-label">Q-${absoluteIndex + 1}: ${question.question}</label>
+                      <div class="options">
+                          <label class="option-label">
+                              <input type="radio" name="q-${absoluteIndex}" value="3" ${Object.entries(question).map(([key, value]) => {
+                                  return `data-${key}="${3 * value}"`;
+                              }).join(' ')} onclick="handleRadioClick(this, ${absoluteIndex}, 3)">
+                              <span>✅ Ja</span>
+                          </label>
+                          <label class="option-label">
+                              <input type="radio" name="q-${absoluteIndex}" value="2" ${Object.entries(question).map(([key, value]) => {
+                                  return `data-${key}="${2 * value}"`;
+                              }).join(' ')}  onclick="handleRadioClick(this, ${absoluteIndex}, 2)">
+                              <span>🤔 Manchmal / Vielleicht </span>
+                          </label>
+                          <label class="option-label">
+                              <input type="radio" name="q-${absoluteIndex}" value="1" ${Object.entries(question).map(([key, value]) => {
+                                  return `data-${key}="${1 * value}"`;
+                              }).join(' ')}  onclick="handleRadioClick(this, ${absoluteIndex}, 1)">
+                              <span>❌ NEIN</span>
+                          </label>
+                      </div>
+                    </div>
+                  `;
+                }).join('');
+                questionSets.push(questionSet);
               }
             }
-      
+
+            function handleRadioClick(radio, index, weight) {
+              if (radio.checked && selectedAnswers[index] === weight) {
+                // If clicking already selected radio, uncheck it
+                radio.checked = false;
+                selectedAnswers[index] = undefined;
+              } else {
+                // Normal radio selection behavior
+                saveAnswer(index, weight);
+              }
+              updateSubmitButton();
+            }
+
+            function renderQuestions() {
+              const container = document.getElementById('questions-container');
+              container.innerHTML = questionSets[currentPage];
+              
+              // Restore any previously selected answers
+              for (let i = currentPage * questionsPerPage; i < (currentPage + 1) * questionsPerPage; i++) {
+                if (selectedAnswers[i] !== undefined) {
+                  const radio = document.querySelector(`input[name="q-${i}"][value="${selectedAnswers[i]}"]`);
+                  if (radio) radio.checked = true;
+                }
+              }
+            }
+
             function saveAnswer(index, weight) {
               selectedAnswers[index] = weight;
               updateSubmitButton();
             }
-      
+
             function updateSubmitButton() {
               const totalAnswered = selectedAnswers.filter((ans) => ans !== undefined).length;
               document.getElementById('submit-btn').disabled = totalAnswered < requiredAnswers;
             }
-      
+
             function nextPage() {
-              if ((currentPage + 1) * 10 < questions.length) {
+              if (currentPage < questionSets.length - 1) {
                 currentPage++;
                 renderQuestions();
                 updateButtons();
+                 // Scroll to absolute top of page
+                 window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
               }
             }
-      
+
             function prevPage() {
               if (currentPage > 0) {
                 currentPage--;
                 renderQuestions();
                 updateButtons();
+                 // Scroll to absolute top of page
+                 window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
               }
             }
-      
+
             function updateButtons() {
               document.getElementById('prev-btn').disabled = currentPage === 0;
-              document.getElementById('next-btn').disabled = (currentPage + 1) * 10 >= questions.length;
+              document.getElementById('next-btn').disabled = currentPage >= questionSets.length - 1;
             }
-      
+
+            // Initialize the question sets and render first page
+            initializeQuestionSets();
+            renderQuestions();
+            updateButtons();
             function submitQuiz() {
               let totalScores = {};
           
@@ -446,166 +449,67 @@
               sortedSubstances.forEach(([substance, score]) => {
                 resultMessage += `${substance}: ${score}\n`;
               });
-          console.log("1st:" ,resultMessage)
   
-              
-          
               // Save top substances globally as lowercase for later comparison
               window.resultMessage = sortedSubstances.map(([substance]) => substance.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
-              console.log("resultMessage" , resultMessage);
   
               // Preloaded products array via Liquid (see your existing code)
               var allProducts = [
                 {% for product in collections.all.products %}
                 {
-                  title: "{{ product.title }}",
-                  sku: "{{ product.variants.first.sku }}", 
-                  url: "{{ product.url }}",
-                  variant_id: "{{ product.variants.first.id }}",
-         
-                short_desc:   '{{ product.metafields.custom.p_short_desc }}',
-                  substances: "{{ product.metafields.custom.product_substances.value }}",
-                  featured_image: "{{ product.featured_image | img_url: 'small' }}",
-                  body_html: `{{ product.body_html | strip_newlines | escape }}`
+                  
+                  substances: "{{ product.metafields.custom.product_substances.value }}"
+                
                 }{% unless forloop.last %},{% endunless %}
                 {% endfor %}
               ];
-  
             
-              console.log("All Products:", allProducts);
               var substancesSet = new Set();
   
               function addSubstance(substance) {
-                  substancesSet.add(substance); // Add only unique values
-                  let substancesString = Array.from(substancesSet).join(", "); // Convert set to a comma-separated string
+                  substancesSet.add(substance);
+                  let substancesString = Array.from(substancesSet).join(", "); 
                   return substancesString;
               }
               // Filter products based on matching substances (convert product substances to lowercase array)
               var matchingProducts = allProducts.filter(product => {
                 if (!product.substances || product.substances.trim() === "") return false;
                 
-                console.log("product.substances", product.substances);
                 let productSubstances = product.substances.split(",").map(s => s.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "_"));
                 return window.resultMessage.some(substance => productSubstances.includes(substance));
               });
-              matchingProducts.map(product => { addSubstance(product.substances) });
-              console.log("Matching Products:", substancesSet);
-              // Save matching products globally for later display
-              window.matchingProducts = matchingProducts;
-  
-              console.log("real matched" ,  window.matchingProducts )
-          
-              window.substancesSet = substancesSet;
-              // Hide quiz form and display thank-you container
-              document.querySelector('.quiz-form-main').style.display = 'none';
-              document.querySelector('.thankyou-container').style.display = 'block';
-              window.scrollTo({
+                matchingProducts.map(product => { addSubstance(product.substances) });
+                // Save matching products globally for later display
+                window.matchingProducts = matchingProducts;
+                
+                window.substancesSet = substancesSet;
+                // Hide quiz form and display thank-you container
+                document.querySelector('.quiz-form-main').style.display = 'none';
+                document.querySelector('.thankyou-container').style.display = 'block';
+                const substancesNote = document.querySelector('.substances-note');
+                substancesNote.innerText = 'Top-Substanzen deines Quiz-Ergebnisses: ' +Array.from(window.substancesSet).join(", ");
+            
+                window.scrollTo({
                   top: 0,
                   behavior: 'smooth'
                 });
-            }
+              }
           
-            renderQuestions();
+              renderQuestions();
           
-            // When the user clicks the thank-you button, hide thank-you and show recommended-products
-            document.querySelector('.thankyou-button').addEventListener('click', function() {
-              // Hide thank-you container and show recommended-products container
-              document.querySelector('.thankyou-container').style.display = 'none';
-              document.querySelector('.recommended-products').style.display = 'block';
-          
-              // Update the note with top substances.
-              const substancesNote = document.querySelector('.substances-note');
-              substancesNote.innerText = 'Nachfolgend finden Sie die empfohlenen Produkte basierend auf den Top-Substanzen Ihres Quizergebnisses: ' +Array.from(window.substancesSet).join(", ");
-          
-              // Display the matching products in the product-list container.
-              displayProducts(window.matchingProducts);
-            });
+              // When the user clicks the thank-you button, hide thank-you and show recommended-products collection
+              document.querySelector('.thankyou-button').addEventListener('click', function() {
+                document.querySelector('.thankyou-container').style.display = 'none';
+                displayProducts(substancesSet);
+              });
           
             // Function to display matching products
-            function displayProducts(products) {
-              let productContainer = document.getElementById("product-list");
-              productContainer.innerHTML = ""; // Clear previous results
-          
-              if (products.length === 0) {
-                productContainer.innerHTML = "<p>No matching products found.</p>";
-              } else {
-                products.forEach(product => {
-                  
-                  let productHTML = `
-                      <div class="product-item">
-                                          <a class="product-item-link-inner" href="${product.url}" target="_blank"> 
-         
-                      <img src="${product.featured_image}" alt="${product.title}" />
-  
-                      <h2 class="quiz-product-title">${product.title}</h2>
-                      </a>
-                      <p class="quiz-product-desc">${product.short_desc}</p>
-
-                       <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="${product.variant_id}" />
-                        <input type="submit" value="In den Warenkorb legen" class="add-to-cart quiz-ATC btn product-card-btn__btn js-product-add" />
-                        </form>
-
-                     {% comment %} <button class="add-to-cart quiz-ATC" data-variant-id="${product.variant_id}">IN DEN EINKAUFSWAGEN LEGEN</button> {% endcomment %}
-  
-                    </div>
-                  
-                  `;
-                  productContainer.innerHTML += productHTML;
-                });
-              }
-  
-              attachAddToCartEvents();
-  
-            }
-  
-            function attachAddToCartEvents() {
-              const addToCartButtons = document.querySelectorAll('.add-to-cart');
-              addToCartButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                  const variantId = e.target.getAttribute('data-variant-id');
-                  // Create the payload for adding to cart (quantity: 1 in this example)
-            
-                  fetch('/cart/add.js', {
-                      method: 'POST',
-                      headers: {
-                          'Content-Type': 'application/json',
-                          'Accept': 'application/json'
-                      },
-                      body: JSON.stringify({
-                          id: variantId,
-                          quantity: 1
-  
-                      })
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                      console.log('Product added to cart:', data);
-                  })
-              });
-                          
-                  {% comment %} fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                  })
-                  .then(response => {
-                    if (!response.ok) {
-                      throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                  })
-                  .then(data => {
-                    console.log("Product added to cart:", data);
-                    // Optionally update your cart UI here
-                  })
-                  .catch(error => {
-                    console.error("Error adding product to cart:", error);
-                  }); {% endcomment %}
-                {% comment %} }); {% endcomment %}
-              });
+            function displayProducts(substancesSet) {
+              const selectedFilters =  Array.from(substancesSet);
+              const queryString = selectedFilters
+                  .map(tag => `filter.p.m.custom.product_substances=${encodeURIComponent(tag)}`)
+                  .join("&");
+              window.location.href = `/collections/all?${queryString}`;   
             }
     </script>
   </body>

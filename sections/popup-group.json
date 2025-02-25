@@ -4,13 +4,12 @@
   "sections": {
     "promo-pop": {
       "type": "promo-pop",
-      "disabled": true,
       "settings": {
         "enable_newsletter": false,
         "title": "",
-        "text": "<p>Dieser Shop befindet sich noch in der Testphase, und daher funktioniert möglicherweise nicht alles reibungslos. Bitte haben Sie Geduld. Teilen Sie uns unbedingt mit, wenn Ihnen Fehler auffallen. Der Shop „in seinem alten Gewand“ ist weiterhin nutzbar, falls Sie dies bevorzugen: <a href=\"https:\/\/afega-anti-aging-shop.com\">https:\/\/afega-anti-aging-shop.com<\/a><\/p>",
-        "link_title": "",
-        "link": "",
+        "text": "<p>Testbetrieb : <\/p>",
+        "link_title": "AFEGA® VITAL-CHECK",
+        "link": "shopify:\/\/pages\/quiz-recommendation",
         "delay": 1,
         "expiry": 7
       }

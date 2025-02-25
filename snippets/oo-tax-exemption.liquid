@@ -82,6 +82,7 @@ async function initializeTaxExemption() {
       }
     } else {
       ooInputError.textContent = "Please fill in both fields";
+      document.getElementById("oo-tax-succes").style.display = "none";
     }
   }
 
@@ -170,6 +171,7 @@ function sendDataToExternalURL(data) {
         vatNumberError.textContent = "VAT number is same country as webshop";
       } else {
         vatNumberError.textContent = "Invalid VAT number";
+        taxExemptionSucces.style.display = "none";
       }
     })
     .catch((error) => {

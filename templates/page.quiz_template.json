@@ -50,7 +50,7 @@
         "text_83dCJ7": {
           "type": "text",
           "settings": {
-            "text": "<p>Beantworten Sie 75 einfache Fragen und entdecken Sie die 5 besten Nahrungsergänzungsmittel, die auf Ihre Bedürfnisse zugeschnitten sind.<\/p>",
+            "text": "<p>Beantworten Sie 57 einfache Fragen und entdecken Sie die 5 besten Anti-Aging-Substanzen, die auf Ihre Bedürfnisse zugeschnitten sind.<\/p>",
             "text_size": 2,
             "text_width": 40,
             "text_size_mobile": 2
@@ -130,7 +130,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Wissenschaftlicher Hintergrund",
-                "text": "<p>Das Altern wird durch zahlreiche biologische Faktoren beeinflusst, darunter Zellenergie, Entzündungen, oxidativer Stress, DNA-Schäden und die Gesundheit der Mitochondrien. Wissenschaftliche Untersuchungen haben gezeigt, dass bestimmte Substanzen diese Prozesse aktiv unterstützen und die allgemeine Zellgesundheit fördern können. Der AFEGA® Vitality Check basiert auf neuesten wissenschaftlichen Erkenntnissen zu Anti-Aging-Mechanismen. Dieser Test wurde jedoch nicht empirisch validiert. Die Ergebnisse sollten daher als Leitfaden für Ihre persönliche Anti-Aging-Strategie betrachtet werden und ersetzen nicht die ärztliche Beratung.<\/p>",
+                "text": "<p>Das Altern wird durch zahlreiche biologische Faktoren beeinflusst, darunter Zellenergie, Entzündungen, oxidativer Stress, DNA-Schäden und die Gesundheit der Mitochondrien. Wissenschaftliche Untersuchungen haben gezeigt, dass bestimmte Substanzen diese Prozesse aktiv unterstützen und die allgemeine Zellgesundheit fördern können. Der AFEGA® Vital-Check basiert auf neuesten wissenschaftlichen Erkenntnissen zu Anti-Aging-Mechanismen. Dieser Test wurde jedoch nicht empirisch validiert. Die Ergebnisse sollten daher als Leitfaden für Ihre persönliche Anti-Aging-Strategie betrachtet werden und ersetzen nicht die ärztliche Beratung.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -172,7 +172,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Contexte scientifique",
-                "text": "<p>Le vieillissement est influencé par de nombreux facteurs biologiques, notamment l’énergie cellulaire, l’inflammation, le stress oxydatif, les dommages à l’ADN et la santé mitochondriale. La recherche scientifique a montré que des substances spécifiques peuvent soutenir activement ces processus et favoriser la santé globale des cellules.<br\/>Le Bilan Vitalité AFEGA® s'appuie sur les dernières découvertes scientifiques sur les mécanismes anti-âge. Cependant, ce test n’a pas été validé empiriquement. Les résultats doivent donc être considérés comme une ligne directrice pour votre stratégie anti-âge personnelle et ne remplacent pas un avis médical.<\/p>",
+                "text": "<p>Le vieillissement est influencé par de nombreux facteurs biologiques, notamment l’énergie cellulaire, l’inflammation, le stress oxydatif, les dommages à l’ADN et la santé mitochondriale. La recherche scientifique a montré que des substances spécifiques peuvent soutenir activement ces processus et favoriser la santé globale des cellules.<br\/>Le AFEGA® Vitality Check s'appuie sur les dernières découvertes scientifiques sur les mécanismes anti-âge. Cependant, ce test n’a pas été validé empiriquement. Les résultats doivent donc être considérés comme une ligne directrice pour votre stratégie anti-âge personnelle et ne remplacent pas un avis médical.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -255,7 +255,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "How the Test Works",
-                "text": "<p>You will receive 75 targeted questions covering various aspects of your health, diet, lifestyle, and genetic predispositions. Each question will be presented individually, and you can choose from three response options:<\/p><p>✅ YES<br\/>🤔 Sometimes \/ maybe<br\/>❌ no<\/p>",
+                "text": "<p>You will receive 57 targeted questions covering various aspects of your health, diet, lifestyle, and genetic predispositions. Each question will be presented individually, and you can choose from three response options:<\/p><p>✅ YES<br\/>🤔 Sometimes \/ maybe<br\/>❌ no<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -298,7 +298,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "So funktioniert der Test",
-                "text": "<p>Sie erhalten 75 gezielte Fragen zu verschiedenen Aspekten Ihrer Gesundheit, Ernährung, Lebensweise und genetischen Veranlagung. Jede Frage wird einzeln gestellt und Sie können aus drei Antwortmöglichkeiten wählen: <\/p><p>✅ JA<\/p><p>🤔 Manchmal \/ vielleicht <\/p><p>❌ Nein<\/p>",
+                "text": "<p>Sie erhalten 57 gezielte Fragen zu verschiedenen Aspekten Ihrer Gesundheit, Ernährung, Lebensweise und genetischen Veranlagung. Jede Frage wird einzeln gestellt und Sie können aus drei Antwortmöglichkeiten wählen: <\/p><p>✅ JA<\/p><p>🤔 Manchmal \/ vielleicht <\/p><p>❌ Nein<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -341,7 +341,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Cómo funciona la prueba",
-                "text": "<p>Recibirá 75 preguntas específicas que cubrirán diversos aspectos de su salud, dieta, estilo de vida y predisposiciones genéticas. Cada pregunta se presentará individualmente y podrás elegir entre tres opciones de respuesta: <\/p><p>✅ SÍ<\/p><p>🤔 A veces\/tal vez<\/p><p>❌ no<\/p>",
+                "text": "<p>Recibirá 57 preguntas específicas que cubrirán diversos aspectos de su salud, dieta, estilo de vida y predisposiciones genéticas. Cada pregunta se presentará individualmente y podrás elegir entre tres opciones de respuesta: <\/p><p>✅ SÍ<\/p><p>🤔 A veces\/tal vez<\/p><p>❌ no<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -384,7 +384,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Comment fonctionne le test",
-                "text": "<p>Vous recevrez 75 questions ciblées couvrant divers aspects de votre santé, de votre alimentation, de votre mode de vie et de vos prédispositions génétiques. Chaque question sera présentée individuellement et vous pourrez choisir parmi trois options de réponse :<\/p><p>✅ OUI<\/p><p>🤔 Parfois \/ peut-être<\/p><p>❌ non<\/p>",
+                "text": "<p>Vous recevrez 57 questions ciblées couvrant divers aspects de votre santé, de votre alimentation, de votre mode de vie et de vos prédispositions génétiques. Chaque question sera présentée individuellement et vous pourrez choisir parmi trois options de réponse :<\/p><p>✅ OUI<\/p><p>🤔 Parfois \/ peut-être<\/p><p>❌ non<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -427,7 +427,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Come funziona il test",
-                "text": "<p>Riceverai 75 domande mirate che coprono vari aspetti della tua salute, dieta, stile di vita e predisposizioni genetiche. Ogni domanda verrà presentata individualmente e potrai scegliere tra tre opzioni di risposta:<\/p><p>✅ SÌ<\/p><p>🤔 A volte\/forse<\/p><p>❌ no<\/p>",
+                "text": "<p>Riceverai 57 domande mirate che coprono vari aspetti della tua salute, dieta, stile di vita e predisposizioni genetiche. Ogni domanda verrà presentata individualmente e potrai scegliere tra tre opzioni di risposta:<\/p><p>✅ SÌ<\/p><p>🤔 A volte\/forse<\/p><p>❌ no<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -470,7 +470,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "Como funciona o teste",
-                "text": "<p>Você receberá 75 perguntas específicas cobrindo vários aspectos de sua saúde, dieta, estilo de vida e predisposições genéticas. Cada questão será apresentada individualmente, e você poderá escolher entre três opções de resposta: <\/p><p>✅ SIM<\/p><p>🤔 Às vezes\/talvez<\/p><p>❌ não<\/p>",
+                "text": "<p>Você receberá 57 perguntas específicas cobrindo vários aspectos de sua saúde, dieta, estilo de vida e predisposições genéticas. Cada questão será apresentada individualmente, e você poderá escolher entre três opções de resposta: <\/p><p>✅ SIM<\/p><p>🤔 Às vezes\/talvez<\/p><p>❌ não<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -607,7 +607,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "",
-                "text": "<p>Starten Sie jetzt Ihren AFEGA® Vitality Check und entdecken Sie die für Sie besten Substanzen!<\/p>",
+                "text": "<p>Starten Sie jetzt Ihren AFEGA® Vital-Check und entdecken Sie die für Sie besten Substanzen!<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -617,7 +617,7 @@
               "settings": {
                 "add-text-color": true,
                 "title": "",
-                "text": "<p>Dies ist ein Service des AFEGA Anti-Aging-Shops und die AFEGA Research Group lehnt jegliche Haftung im Zusammenhang mit der Nutzung dieses Services ab.<\/p>",
+                "text": "<p>Dies ist ein Service der AFEGA Research Group und der AFEGA Anti-Aging-Shop lehnt jegliche Haftung im Zusammenhang mit der Nutzung dieses Services ab.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -671,7 +671,7 @@
               "settings": {
                 "add-text-color": true,
                 "title": "",
-                "text": "<p>Este es un servicio de AFEGA Anti-Aging-Shop y AFEGA Research Group rechaza cualquier responsabilidad en relación con el uso de este servicio.<\/p>",
+                "text": "<p>Este es un servicio de AFEGA Research Group y AFEGA® Anti-Aging-Shop rechaza cualquier responsabilidad en relación con el uso de este servicio.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -715,7 +715,7 @@
               "settings": {
                 "add-text-color": false,
                 "title": "",
-                "text": "<p>Commencez dès maintenant votre Check Vitalité AFEGA® et découvrez les meilleures substances pour vous !<\/p>",
+                "text": "<p>Commencez dès maintenant votre AFEGA® Vitality Check et découvrez les meilleures substances pour vous !<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -725,7 +725,7 @@
               "settings": {
                 "add-text-color": true,
                 "title": "",
-                "text": "<p>Il s'agit d'un service de l'AFEGA Anti-Aging-Shop et le groupe de recherche AFEGA décline toute responsabilité liée à l'utilisation de ce service.<\/p>",
+                "text": "<p>Il s'agit d'un service de l'AFEGA Research Group et le AFEGA® Anti-Aging-Shop décline toute responsabilité liée à l'utilisation de ce service.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -779,7 +779,7 @@
               "settings": {
                 "add-text-color": true,
                 "title": "",
-                "text": "<p>Questo è un servizio dell'AFEGA Anti-Aging-Shop e il Gruppo di Ricerca AFEGA declina ogni responsabilità in relazione all'utilizzo di questo servizio.<\/p>",
+                "text": "<p>Questo è un servizio dell'AFEGA Resedarch. Group e il AFEGA® Anti-Aging-Shop declina ogni responsabilità in relazione all'utilizzo di questo servizio.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
@@ -833,7 +833,7 @@
               "settings": {
                 "add-text-color": true,
                 "title": "",
-                "text": "<p>Este é um serviço da AFEGA Anti-Aging-Shop e o AFEGA Research Group isenta-se de qualquer responsabilidade em relação ao uso deste serviço.<\/p>",
+                "text": "<p>Este é um serviço da AFEGA Research Group e o AFEGA® Anti-Aging-Shop isenta-se de qualquer responsabilidade em relação ao uso deste serviço.<\/p>",
                 "align": "left",
                 "width": "1\/1"
               }
